@@ -5,7 +5,7 @@ Information for lncATLAS container
 ## Instructions
 
 ~~~bash
-docker build -t lncATLAS .
+docker build -t lncatlas .
 ~~~
 
 Mapping to port 3838 (not installed in the host)
