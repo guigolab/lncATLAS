@@ -20,5 +20,8 @@ VOLUME /srv/shiny-server/
 # Set working directory
 WORKDIR /srv/shiny-server/
 
+# Set the user
+USER shiny
+
 # Define default command
 CMD ["/usr/bin/bootstrap.sh"]
