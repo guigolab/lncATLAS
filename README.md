@@ -12,7 +12,7 @@ docker build -t lncatlas .
 
 ### Setup
 
-The container runs the server as the `shiny` user by default. The user has `uid=2001` and `gid=2001`. In order to properly run the container, the mapped volumes should belong to this user.
+The container runs the server as the `shiny` user by default. The user has `uid=2001` and `gid=2001`. In order to properly run the container, the mapped volumes should belong to this user. Execute the following commands in the host before starting the container:
 
 ```bash
 # get lncATLAS application archive
