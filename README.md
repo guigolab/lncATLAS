@@ -25,7 +25,7 @@ mkdir -p /var/log/shiny-server
 # change permissions to the app and log folders
 chown shiny:shiny lncATLAS-app /var/log/shiny-server
 
-# if the user `shiny` does not exists and you don't want to create a new user ...
+# if the user 'shiny' does not exists and you don't want to create a new user ...
 chown 2001:2001 lncATLAS-app /var/log/shiny-server
 ```
 
