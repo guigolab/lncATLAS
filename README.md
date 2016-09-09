@@ -36,3 +36,9 @@ Mapping to port 3838 (not installed in the host)
 ```bash
 docker run -ti --name lncatlas -d -p 3838:3838 -v $(pwd)/lncATLAS-app/:/srv/shiny-server/ -v $(pwd)/my.cnf:/srv/shiny-server/.mysqlconf -v /var/log/shiny-server/:/var/log/shiny-server/ lncatlas
 ```
+
+## TODO
+
+- [ ] make test container for development
+- [ ] find a way for David to easily deploy the test container
+- [ ] find a solution for logging
