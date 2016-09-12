@@ -37,9 +37,9 @@ Mapping to port 3838 (not installed in the host)
 docker run -ti --name lncatlas -d -p 3838:3838 -v $(pwd)/lncATLAS-app/:/srv/shiny-server/ -v $(pwd)/my.cnf:/srv/shiny-server/.mysqlconf -v /var/log/shiny-server/:/var/log/shiny-server/ lncatlas
 ```
 
-== lncATLAS development
+## lncATLAS development
 
-=== Server setup
+### Server setup
 
 Create a `shiny` user with `git` shell and a specific skel folder:
 
@@ -82,7 +82,7 @@ skel
 
 The `post-receive` hook contains the code to update the `lncATLAS` shiny app folder and it is executed every time a `push` is received.
 
-=== Client setup
+### Client setup
 
 Configure a new remote on the client:
 
