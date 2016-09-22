@@ -84,5 +84,5 @@ $ git push monstre master
 ## TODO
 
 - [ ] make test container for development
-- [ ] find a way for David to easily deploy the test container
+- [x] find a way for David to easily deploy the test container
 - [ ] find a solution for logging
