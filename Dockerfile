@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y -t unstable \
 # Adjust user permissions
 RUN usermod -u 2001 shiny; groupmod -g 2001 shiny
 RUN mkdir -p /var/run/shiny-server
-RUN chown -R shiny:shiny /var/run/shiny-server /var/lib/shiny-server /var/log/shiny-server /srv/shiny-server
+RUN chown -R shiny:shiny /var/run/shiny-server /var/lib/shiny-server /srv/shiny-server
 
 # Copy bootsrtapping script
 COPY bootstrap.sh /usr/bin/bootstrap.sh
