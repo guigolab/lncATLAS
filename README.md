@@ -32,7 +32,7 @@ Create a `shiny` user with `git` shell and a specific skel folder:
 $ useradd -u 2001 -s /usr/bin/git-shell -m -k skel shiny
 ```
 
-The `skel` folder contains an initialized bare git repo with a `post-receive` hook and an authorized key.
+The `skel` folder contains an initialized bare git repo with a `post-receive` hook and an authorized key and a pre-created folder for the lncatlas shiny app.
 
 ```bash
 $ tree skel
@@ -69,16 +69,31 @@ The `post-receive` hook contains the code to update the `lncATLAS` shiny app fol
 
 ### Client setup
 
+Get the ssh key and add an entry in `.ssh/config`:
+
+```
+Host lncatlas-dev
+Hostname rodericvm.crg.es
+User shiny
+IdentityFile ~/.ssh/shiny_id_rsa
+```
+
+The private key requires a password to be used. If you don't want to type the key password every time you use it, add the key to the ssh agent:
+
+```
+ssh-add ~/.ssh/shiny_id_rsa 
+```
+
 Configure a new remote on the client:
 
 ```bash
-$ git remote add monstre shiny@monstre.crg.es:lncatlas.git
+$ git remote add dev lncatlas-dev:lncatlas.git
 ```
 
-Once you wnat to test your commited changes, run the following command from the client to trigger the update:
+Once you want to test your commited changes, run the following command from the client to trigger the update:
 
 ```bash
-$ git push monstre master
+$ git push dev master
 ```
 
 ## TODO
