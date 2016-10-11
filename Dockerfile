@@ -1,4 +1,4 @@
-FROM rocker/shiny:latest
+FROM rocker/shiny@sha256:2a323588645066a69291bc9f2ee0c2e23d56bfbed82d27b1f8f314c4c19374a4
 
 MAINTAINER Emilio Palumbo <emilio.palumbo@crg.eu>
 
