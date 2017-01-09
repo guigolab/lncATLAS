@@ -98,6 +98,6 @@ $ git push dev master
 
 ## TODO
 
-- [ ] make test container for development
-- [x] find a way for David to easily deploy the test container
+- [x] create container for development
+- [ ] create container for production
 - [ ] find a solution for logging
