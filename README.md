@@ -26,10 +26,6 @@ This is a dynamic measure that permits a quantitative comparison
 between multiple genes and also permit analysing distributions of
 gene sets.
 
-RCI is defined as follows:
-
-$$ RCI = \log_{2} (\frac{Fraction_{i} \quad (RPKMs)}{Fraction_{j} \quad (RPKMs)}) $$
-
 
 ## Authors
 
