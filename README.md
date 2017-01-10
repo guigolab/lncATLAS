@@ -12,18 +12,18 @@ cytoplasmatic expression profile.
 
 The data used and displayed in lncATLAS is directly obtained from
 GENCODE release [V24](http://www.gencodegenes.org/releases/24.html)
-and it is available through our web site in the
+and it is available through our website in the
 download all data button from get raw data panel.
 
 
 ## Measuring localisation
 
 The RCI or Relative Concentration Index is a measure based on the
-logarithmic quotien between 2 fractions. For most of the
+logarithmic quotient between 2 fractions. For most of the
 plots, we use the CN RCI or Cytosolic / Nuclear expression in FPKMs.
 
 This is a dynamic measure that permits a quantitative comparison
-between multiple genes and also permit analysing distributions of
+between multiple genes and also permits analysing distributions of
 gene sets.
 
 
