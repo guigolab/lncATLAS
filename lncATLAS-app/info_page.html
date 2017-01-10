@@ -1,0 +1,159 @@
+<!--
+<!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+ Latest compiled and minified CSS
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+
+</head>
+<body>
+-->
+<style>
+#svgMain {margin-left:auto; margin-right:auto; display:block;}
+</style>
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<div class="row">
+  <div class="col-md-12">
+    <h2 class="text-center"> Basic Usage </h2>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <p class="text-justify">
+      lncATLAS is an easy to use web-based visualization tool to obtain useful
+      information about expression localization of long non-coding class of
+      RNAs. It is easy to use by just searching your lncRNA of interest in the
+      search box. You can also use ENSEMBL gene ids to select
+      them. There are also some reference genes with a clear nuclear or
+      cytoplasmatic expression profile. In some plots (3 and 4) you
+      could also select the cell line from the dropdown menu to obtain a zoom
+      into the distributions.
+      Although many genes would have a similar
+      profile among cell lines there might exist small changes.
+
+      In lncATLAS we provide 6 charts that can be divided into 3 sections:
+      <ol>
+        <li>Inspect the cytosolic-nuclear localisation of your gene of interest
+           (GOI): a barplot indicating the CN RCI values in each cell line for
+           the selected gene(s)</li>
+        <li>Inspect the cytosolic-nuclear localisation of your GOI within the
+           distribution of all genes: distribution of RCI values in each cell
+           line for lncRNAs and mRNAs with the selected gene(s) highlighted</li>
+        <li>Inspect the localisation of your GOI at sub-compartment level:
+          localisation values within distributions for the K562 cell line
+           subnuclear and subcytosolic compartments</li>
+      </ol>
+    </p>
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="col-md-12">
+    <h2 class="text-center"> Other usages </h2>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <p class="text-justify">
+      The 2 major alternative usages for lncATLAS are to download raw data for
+      a single selection of genes that can be done directly on the front page or
+      to download a specific data set from a list of gene ids in a batch mode.
+      This second
+      feature is in the get raw data tab.
+
+     After entering the list a <code> .csv </code> file with
+     the expression values from the selected genes will be generated.
+
+     In the list input gene ids must be place it as a column.
+     </p>
+    <h4 class="text-center"> Multiple gene selection</h4>
+    <p class="text-justify">
+      In the main page, in the search box, you can enter at least
+      3 genes by the gene name and for the gene id input. If more, only the
+      first 3 will be considered.    </p>
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <h2 class="text-center"> Data sources </h2>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <p class="text-justify">
+      The data used and displayed in lncATLAS is directly obtained from
+      GENCODE release (
+      <a href="http://www.gencodegenes.org/releases/24.html">V24 </a>
+      ). and is available through our web site in the
+      download all data button from get raw data panel.
+      <br>
+      The RCI or Relative Concentration Index has been calculated as follows:
+      $$ RCI = \log_{2} (\frac{Fraction_{i} \quad (RPKMs)}{Fraction_{j} \quad (RPKMs)}) $$
+      <br>
+      Being the fraction i the cytosolic fraction and j the nuclear one for CN
+      RCI shown in most plots. This changes for appropiate subnuclear and
+      subcytosolic fractions in the last plot from the K562 cell line.
+
+      Our intention in representing the subcellular localisation with the RCI is
+      to give a value that represents how more concentrated is a particular
+      gene in one fraction compared to another. It's a flexible approach that
+      permits to compare individual genes easily.
+
+      All the subcellular compartiments available are shown in the
+      following diagram.
+    </p>
+    <div style="text-align:center;">
+     <embed src="cell.svg">
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <h2 class="text-center"> Contact Information </h2>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <p class="text-justify">
+      This project has been carried out by
+      <a href="http://www.dkf.unibe.ch/research/research_groups/rna_amp_cancer_nccr_rna_amp_disease/index_eng.html">Rory Johnson's Lab</a>
+      in the Department of Clinical Research (DCR) of the University of Bern and
+      <a href="http://www.crg.eu/roderic_guigo">Roderic Guigo's Lab</a>
+      in the
+      <a href="http://www.crg.eu">Centre for Genomic Regulation</a>
+      at Barcelona.
+
+      If you have questions or need further information please contact
+      us at
+      <a href="mailto:david.mas@crg.eu">david.mas@crg.eu</a>
+
+      <br>
+      You are free to use any of the generated outputs from this web-site if
+      cited appropriately. This site plots are under the
+      <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
+        CC BY 4.0 license
+      </a>.
+      <br>
+      </p>
+      <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img class="img-responsive center-block" alt="Licencia de Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a>
+
+  </div>
+</div>
+
+
+
+</body>
+</html>
