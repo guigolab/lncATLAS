@@ -11,8 +11,8 @@ cytoplasmatic expression profile.
 ## Data
 
 The data used and displayed in lncATLAS is directly obtained from
-GENCODE release [V24](http://www.gencodegenes.org/releases/24.html) .
-and is available through our web site in the
+GENCODE release [V24](http://www.gencodegenes.org/releases/24.html)
+and it is available through our web site in the
 download all data button from get raw data panel.
 
 
@@ -25,6 +25,10 @@ plots, we use the CN RCI or Cytosolic / Nuclear expression in FPKMs.
 This is a dynamic measure that permits a quantitative comparison
 between multiple genes and also permit analysing distributions of
 gene sets.
+
+RCI is defined as follows:
+
+$$ RCI = \log_{2} (\frac{Fraction_{i} \quad (RPKMs)}{Fraction_{j} \quad (RPKMs)}) $$
 
 
 ## Authors
