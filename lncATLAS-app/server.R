@@ -62,10 +62,14 @@ isolate(unlink(sess_id,recursive = TRUE))
       table.out[,"Data Type"] = a
     } else if (input$downltype == 3){
       table.out = table.out[-grep("ratio*",table.out[,"Data Type"]),]
+      a = table.out[,"Data Type"]
+      a = gsub("cytosol","cytoplasm",a)
+      table.out[,"Data Type"] = a
     } else{
       a = table.out[,"Data Type"]
       a = gsub("ratio2","CNRCI",a)
       a = gsub("ratioK","RCI",a)
+      a = gsub("cytosol","cytoplasm",a)
       table.out[,"Data Type"] = a
     }
     table.out
@@ -958,8 +962,30 @@ isolate(unlink(sess_id,recursive = TRUE))
     },
     content = function(file) {
       gene.ids <- unlist(strsplit(input$listretrive,"\n"))
-      table.from.ids <- getAllfromIDvec(gene.ids)
-      write.csv(table.from.ids, file)
+      table.out <- getAllfromIDvec(gene.ids)
+      table.out <- table.out[,c(1:4,7:9)]
+      colnames(table.out) <- c("ENSEMBL ID","Data Source","Data Type",
+                               "Value","Gene Name","Coding Type",
+                               "Biotype")
+      if (input$downltype == 1){
+        table.out = table.out[grep("ratio*",table.out[,"Data Type"]),]
+        a = table.out[,"Data Type"]
+        a = gsub("ratio2","CNRCI",a)
+        a = gsub("ratioK","RCI",a)
+        table.out[,"Data Type"] = a
+      } else if (input$downltype == 3){
+        table.out = table.out[-grep("ratio*",table.out[,"Data Type"]),]
+        a = table.out[,"Data Type"]
+        a = gsub("cytosol","cytoplasm",a)
+        table.out[,"Data Type"] = a
+      } else{
+        a = table.out[,"Data Type"]
+        a = gsub("ratio2","CNRCI",a)
+        a = gsub("ratioK","RCI",a)
+        a = gsub("cytosol","cytoplasm",a)
+        table.out[,"Data Type"] = a
+      }
+      write.csv(table.out, file)
     }
   )
 

@@ -37,7 +37,7 @@ dbDisconnect(cn)
 
 verarrow <- HTML("<div class = 'row'>
                     <div class = 'container-fluid'>
-                     <p class = 'arrows'>&#8593;</p> <h3> Cytosolic</h3>
+                     <p class = 'arrows'>&#8593;</p> <h3> Cytoplasm</h3>
                     </div></div>
                     <div class = 'row' style = 'height:200px'>
                     </div>
@@ -201,7 +201,7 @@ shinyUI(
                                            "MALAT1"),
                                        inline = FALSE)),
              column(4,offset = 0,
-                    checkboxGroupInput("refcyto", label="Cytosolic Genes",
+                    checkboxGroupInput("refcyto", label="Cytoplasmic Genes",
                                        choices =
                                          c("DANCR","H19"),
                                        inline = FALSE)
@@ -225,8 +225,8 @@ shinyUI(
           ,class="jumbotron"))
       )
     ),
-    fluidRow(column(8, offset=2,align="center", h3("S1 - Inspect the cytosolic-nuclear localisation of your gene of interest (GOI)"),hr())),
-    fluidRow(column(8, offset=2,align="center",h2("Plot 1 - Cytosolic/Nuclear Localisation: Real values (all cell types)", style="text-align: center;",
+    fluidRow(column(8, offset=2,align="center", h3("S1 - Inspect the cytoplasmic-nuclear localisation of your gene of interest (GOI)"),hr())),
+    fluidRow(column(8, offset=2,align="center",h2("Plot 1 - Cytoplasmic/Nuclear Localisation: Real values (all cell types)", style="text-align: center;",
        class = "s1"))),
     fluidRow(column(2, align = "center",verarrow),
       column(8, align="center",
@@ -234,9 +234,9 @@ shinyUI(
     )),
     fluidRow(column(8, offset=2,align="center",downloadButton('downloadPlotR1', 'Download plot'))),
     fluidRow(class="top-buffer"),
-    fluidRow(column(8, offset=2,align="center", h3("S2 - Inspect the cytosolic-nuclear localisation of your GOI within the distribution of all genes"),hr())),
+    fluidRow(column(8, offset=2,align="center", h3("S2 - Inspect the cytoplasmic-nuclear localisation of your GOI within the distribution of all genes"),hr())),
     fluidRow(
-      column(8, offset=2, align="center",h2("Plot 2 - Cytosolic/Nuclear Localisation: Distribution (all cell types)", style="text-align: center;",
+      column(8, offset=2, align="center",h2("Plot 2 - Cytoplasmic/Nuclear Localisation: Distribution (all cell types)", style="text-align: center;",
          class = "s2")
       )),
     fluidRow(column(8,offset=2,align="center", HTML("<p><b> Note: </b> In the next plot <code>n</code> indicates the total number of genes in each group and <code>m</code> the median RCI value per group. The group percentile corresponding to each gene is also displayed next to the gene point.</p>"))),
@@ -249,7 +249,7 @@ shinyUI(
       fluidRow(class="top-buffer"),
       fluidRow(
         column(6, offset = 3, align="center",
-          h2("Plot 3 - Cytosolic/Nuclear Localisation: Distribution (individual cell type)", style="text-align: center;",
+          h2("Plot 3 - Cytoplasmic/Nuclear Localisation: Distribution (individual cell type)", style="text-align: center;",
             class = "s2")
         )),
       fluidRow(
@@ -261,7 +261,7 @@ shinyUI(
                )),
       fluidRow(column(3,offset=3,align="center",h3("Nuclear"),
                HTML("<p class = 'arrows'> <span>&#8592;</span> </p>")),
-               column(3,align="center", h3("Cytosolic"),
+               column(3,align="center", h3("Cytoplasmic"),
                HTML("<p class = 'arrows'> <span>&#8594;</span> </p>"))
                ),
         fluidRow(column(2,offset=5,align="center",downloadButton('downloadPlotD1', 'Download plot'))),
@@ -270,7 +270,7 @@ shinyUI(
       ,
     fluidRow(
       column(6,align="center",offset=3,
-        h2("Plot 4 - Cytosolic/Nuclear Localisation: Comparison with expression (individual cell type)",style="text-align: center;",
+        h2("Plot 4 - Cytoplasmic/Nuclear Localisation: Comparison with expression (individual cell type)",style="text-align: center;",
           class = "s2")
       )),
     fluidRow( column(2,align = "center",verarrow),
@@ -283,7 +283,7 @@ shinyUI(
     fluidRow(column(8, offset=2,align="center", h3("S3 - Inspect the localisation of your GOI at sub-compartment level"),hr())),
     fluidRow( id = "section3",
       column(8, offset = 2, align="center",
-             h2("Plot 5 - Subcytosoloic, Subnuclear Localisation: K562 cells", class = "text-align s3"),
+             h2("Plot 5 - Subcytoplasmic, Subnuclear Localisation: K562 cells", class = "text-align s3"),
              plotOutput("distroK",width = "90%", height = "450px"))
     ),
 fluidRow(id = "p",
