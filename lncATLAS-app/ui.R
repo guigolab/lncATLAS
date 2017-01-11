@@ -37,7 +37,7 @@ dbDisconnect(cn)
 
 verarrow <- HTML("<div class = 'row'>
                     <div class = 'container-fluid'>
-                     <p class = 'arrows'>&#8593;</p> <h3> Cytoplasm</h3>
+                     <p class = 'arrows'>&#8593;</p> <h3> Cytoplasmic</h3>
                     </div></div>
                     <div class = 'row' style = 'height:200px'>
                     </div>
