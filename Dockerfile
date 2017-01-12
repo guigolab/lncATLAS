@@ -18,7 +18,7 @@ ADD lncATLAS-app /srv/shiny-server/lncATLAS-app
 WORKDIR /srv/shiny-server/lncATLAS-app
 
 # Install dependencies
-RUN R --no-save --no-restore --no-init-file --no-environ--slave -f packrat/init.R --args --bootstrap-packrat
+RUN R --no-save --no-restore --no-init-file --no-environ --slave -f packrat/init.R --args --bootstrap-packrat
 
 # update site_dir in shiny server configuration
 RUN sed -i '/site_dir/ s:;$:/lncATLAS-app;:' /etc/shiny-server/shiny-server.conf 
