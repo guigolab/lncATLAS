@@ -56,7 +56,7 @@ The application folder resides under `/home/shiny` and is called `lncatlas`. It 
 The following command can be used in order to run the container:
 
 ```bash
-docker run -ti --name lncatlas -d -p 3838:3838 -v /home/shiny/lncatlas/:/srv/shiny-server/ -v $(pwd)/my.cnf:/srv/shiny-server/.mysqlconf lncatlas
+docker run --name lncatlas -d -p 3838:3838 -v /home/shiny/lncatlas/:/srv/shiny-server/ -v /path/to/my.cnf:/srv/shiny-server/.mysqlconf lncatlas
 ```
 
 ### Client
