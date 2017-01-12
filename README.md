@@ -26,6 +26,23 @@ This is a dynamic measure that permits a quantitative comparison
 between multiple genes and also permits analysing distributions of
 gene sets.
 
+## Docker deployment
+
+A docker image with the latest released version of the application is available at ...
+
+In order to build a docker image with a specific version of the application run the following command:
+
+```bash
+docker build -t lncatlas .
+```
+
+A new `lncatlas` image will now show at the top of the images list given by the command `docker images`.
+
+The `lncATLAS` application resides in the folder `/srv/shiny-server/` within the image. Credentials to access the backend database must be specified in a `.mysqlconf` file within the application folder. The shiny-server instance will run on port `3838` inside the container and a port has to be mapped on the host to connect to it. The follwing command runs a container in detached mode mapping port `80` on the host and mounting the `.mysqlconf` file as a volume:
+
+```bash
+docker run -d -p 80:3838 -v /path/to/.mysqlconf:/srv/shiny-server/.mysqlconf lncatlas
+```
 
 ## Authors
 

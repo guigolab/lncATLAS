@@ -1,30 +1,8 @@
-# lncATLAS
+# Development setup
 
-Information for lncATLAS container
-
-## Instructions
-
-### Build
-
-```bash
-docker build -t lncatlas .
-```
-
-### Setup
+### Server
 
 The container runs the server as the `shiny` user by default. The user has `uid=2001` and `gid=2001`. In order to properly run the container, the mapped volumes should belong to this user. 
-
-### Run
-
-The application folder resides under `/home/shiny` and is called `lncatlas`. It needs to be mounted as a volume within the container at `/srv/shiny-server/`. A mysql configuration file is also needed in order to access the database. We also map port 3838 (not installed in the host).
-
-```bash
-docker run -ti --name lncatlas -d -p 3838:3838 -v /home/shiny/lncatlas/:/srv/shiny-server/ -v $(pwd)/my.cnf:/srv/shiny-server/.mysqlconf lncatlas
-```
-
-## lncATLAS development
-
-### Server setup
 
 Create a `shiny` user with `git` shell and a specific skel folder:
 
@@ -65,9 +43,23 @@ skel
     └── authorized_keys
 ```
 
+The container can be built with the following command:
+
+```bash
+docker build -t lncatlas-devel -f Dockerfile.devel .
+```
+
 The `post-receive` hook contains the code to update the `lncATLAS` shiny app folder and it is executed every time a `push` is received.
 
-### Client setup
+The application folder resides under `/home/shiny` and is called `lncatlas`. It needs to be mounted as a volume within the container at `/srv/shiny-server/`. A mysql configuration file is also needed in order to access the database. We also map port 3838 (not installed in the host).
+
+The following command can be used in order to run the container:
+
+```bash
+docker run --name lncatlas -d -p 3838:3838 -v /home/shiny/lncatlas/:/srv/shiny-server/ -v /path/to/my.cnf:/srv/shiny-server/.mysqlconf lncatlas
+```
+
+### Client
 
 Get the ssh key and add an entry in `.ssh/config`:
 
