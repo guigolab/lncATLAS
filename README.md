@@ -46,14 +46,7 @@ docker run -d -p 80:3838 -v /path/to/.mysqlconf:/srv/shiny-server/.mysqlconf lnc
 
 ## Authors
 
-This project has been carried out by
-<a href="http://www.dkf.unibe.ch/research/research_groups/rna_amp_cancer_nccr_rna_amp_disease/index_eng.html">Rory Johnson's Lab</a>
-in the Department of Clinical Research (DCR) of the University of Bern and
-<a href="http://www.crg.eu/roderic_guigo">Roderic Guigo's Lab</a>
-in the
-<a href="http://www.crg.eu">Centre for Genomic Regulation</a>
-at Barcelona.
+This project has been carried out by [Rory Johnson's Lab](http://www.dkf.unibe.ch/research/research_groups/rna_amp_cancer_nccr_rna_amp_disease/index_eng.html) in the Department of Clinical Research (DCR) of the University of Bern and
+[Roderic Guigo's Lab](http://www.crg.eu/roderic_guigo) at the [Centre for Genomic Regulation](http://www.crg.eu) in Barcelona.
 
-If you have questions or need further information please contact
-us at
-<a href="mailto:david.mas@crg.eu">david.mas@crg.eu</a>
+If you have questions or need further information please contact us at david.mas@crg.eu.
