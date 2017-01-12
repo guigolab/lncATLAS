@@ -14,8 +14,8 @@ RUN chown -R shiny:shiny /var/run/shiny-server /var/lib/shiny-server /srv/shiny-
 # Copy app
 ADD lncATLAS-app /srv/shiny-server/lncATLAS-app
 
-# update permissions
-RUN chown -r shiny:shiny /srv/shiny-server/lncATLAS-app
+# Fix permissions
+RUN chown -R shiny:shiny /srv/shiny-server/lncATLAS-app
 
 # Set working directory
 WORKDIR /srv/shiny-server/lncATLAS-app
