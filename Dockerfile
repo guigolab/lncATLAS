@@ -14,6 +14,9 @@ RUN chown -R shiny:shiny /var/run/shiny-server /var/lib/shiny-server /srv/shiny-
 # Copy app
 ADD lncATLAS-app /srv/shiny-server/lncATLAS-app
 
+# update permissions
+RUN chown -r shiny:shiny /srv/shiny-server/lncATLAS-app
+
 # Set working directory
 WORKDIR /srv/shiny-server/lncATLAS-app
 
@@ -21,7 +24,7 @@ WORKDIR /srv/shiny-server/lncATLAS-app
 RUN R --no-save --no-restore --no-init-file --no-environ --slave -f packrat/init.R --args --bootstrap-packrat
 
 # update site_dir in shiny server configuration
-RUN sed -i '/site_dir/ s:;$:/lncATLAS-app;:' /etc/shiny-server/shiny-server.conf 
+RUN sed -i '/site_dir/ s:;$:/lncATLAS-app;:' /etc/shiny-server/shiny-server.conf
 
 # Set the user
 USER shiny
