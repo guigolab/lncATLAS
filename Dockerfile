@@ -18,7 +18,7 @@ ADD lncATLAS-app /srv/shiny-server/lncATLAS-app
 WORKDIR /srv/shiny-server/lncATLAS-app
 
 # Install dependencies
-RUN ["R", "--vanilla", "--slave", "-f", "packrat/init.R", "--args", "--bootstrap-packrat"]
+RUN ["R", "--no-save", "--no-restore", "--no-init-file", "--no-environ", "--slave", "-f", "packrat/init.R", "--args", "--bootstrap-packrat"]
 
 # Set the user
 USER shiny
