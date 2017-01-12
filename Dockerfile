@@ -24,4 +24,4 @@ RUN ["R", "--no-save", "--no-restore", "--no-init-file", "--no-environ", "--slav
 USER shiny
 
 # Define default command
-CMD ["exec", "shiny-server", "--pidfile", "/var/run/shiny-server/shiny-server.pid"]
+CMD ["shiny-server", "--pidfile", "/var/run/shiny-server/shiny-server.pid"]
