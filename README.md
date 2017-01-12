@@ -26,6 +26,15 @@ This is a dynamic measure that permits a quantitative comparison
 between multiple genes and also permits analysing distributions of
 gene sets.
 
+## Docker deployment
+
+A docker container with the latest released version of the application is available at ...
+
+A container can be built at any point using the following command:
+
+```bash
+docker build -t lncatlas .
+```
 
 ## Authors
 
