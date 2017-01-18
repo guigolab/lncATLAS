@@ -56,88 +56,7 @@ shinyUI(
   navbarPage("lncATLAS", inverse = TRUE,
     header = tags$head(
       tags$link(rel = "stylesheet", type="text/css", href = "https://fonts.googleapis.com/css?family=Secular+One"),
-      tags$style(HTML(
-        "
-        ul.nav-pills {
-        top: 25px;
-        position: fixed;
-        }
-        .jumbotron p {
-        font-size: 14px;
-        }
-        h1 {
-        font-family: 'Secular One', sans-serif;
-        font-size: 80px;
-        text-align: center;
-        }
-        body {
-        position: relative;
-        }
-        h2{
-        font-family: 'Secular One', sans-serif;
-        font-size: 35px;
-        }
-        h3{
-        font-family: 'Secular One', sans-serif;
-        font-size: 30px;
-        }
-        h4{
-        text-align:center;
-        }
-        #retrieve{
-            text-align:center;
-        }
-        #svgMain {
-            margin-left:auto;
-            margin-right:auto;
-            display:block;}
-        .s1{
-            color: chocolate;
-        }
-        .s3{
-            color: olive;
-        }
-        .s2{
-            color: navy;
-        }
-        .arrows{
-          font-size: 100px;
-        }
-        .shiny-progress .progress {
-        position: absolute;
-        width: 100%;
-        top: 0px;
-        height: 15px;
-        margin: 0px;
-        }
-        .shiny-progress .bar {
-        opacity: 0.7;
-        transition-duration: 500ms;
-        }
-        .shiny-progress .progress-text {
-        position: absolute;
-        right: 10px;
-        height: 50px;
-        width: 240px;
-        background-color: #eef8ff;
-        margin: 0px;
-        padding: 2px 3px;
-        opacity: 0.85;
-        }
-        .shiny-progress .progress-text .progress-message {
-        padding: 0px 3px;
-        font-weight: bold;
-        font-size: 90%;
-        }
-        .shiny-progress .progress-text .progress-detail {
-        padding: 0px 3px;
-        font-size: 80%;
-        }
-        .top-buffer { margin-top:250px; }
-        .glyphicon-remove { color: #e05959;}
-        .glyphicon-ok { color: #acf274;}
-        .shiny-output-error-validation {color: #ed8b36;font-size: 25px;}
-        "))
+      tags$link(rel = "stylesheet", type = "text/css", href = "main.css")
   ),
     tabPanel("lncATLAS",
     # then 3 rows
@@ -166,15 +85,23 @@ shinyUI(
 #                   </ul>
 #                   ')
 #              ),
-      column(4,offset = 2,
-             tags$div(
-             h2("Search box:"),
-             h3("Quick start:"),
-             p("Find the subcellular localisation of your long non-conding RNA of interest:"),
-             p("1) Enter the official GENCODE gene name or ENSEMBL gene id below (max. 3 genes)"),
-             p("2) Check for the ID to appear below and press Go to generate the plots"),
-             h3("Search by gene name:"),
-             textInput('e1', "Enter your lncRNA of interest (e.g., MALAT1)"),
+    column(10,offset=1,
+
+    tags$div(class = "row equal",
+      column(5,
+             h2(align = "center","Search box:"),
+             h3(align="center","Quick start:"),
+             HTML("<p>Find the subcellular localisation of your long non-conding RNA of interest:</p>
+	       <ol>
+	       	<li>Enter the official GENCODE gene name (e.g. Malat1) or ENSEMBL gene ID (e.g. ENSG...) below (max. 3 genes)</li>
+	       	<li>Check for the ID to appear below and press Go to generate the plots</li>
+	       </ol>"),
+             column(12,align = "center",
+
+	     h3("Search by GENCODE gene name:"),
+
+             textInput('e1', "Enter your lncRNA of interest (e.g., MALAT1)")
+	     ),
              #selectizeInput('e1', 'Enter a Gene Name:',
               #              choices = gene.name,
               #              options = list(maxOptions = 5,maxItems = 3),
@@ -182,17 +109,19 @@ shinyUI(
               #              selected = "MALAT1"),
 
               #
+	    column(12,align="center",
               conditionalPanel(
                 condition = "input.e1 == '' & (input.refnucl == '' & input.refcyto == '' & input.refdual == '')",
-                textInput("geneIdtmp", label = h3("Enter a Ensembl ID:"),
+                textInput("geneIdtmp", label = h3("Search by ENSEMBL gene ID:"),
                           value = "")
                 ),
              conditionalPanel(
                condition = "input.e1 != '' | input.refnucl != '' | input.refcyto != '' | input.refdual != ''",
                 uiOutput("ID")
                ),
-             actionButton("go", "GO",icon("send",lib="glyphicon")),
-             h3("Add reference genes:"),
+             actionButton("go", "GO",icon("send",lib="glyphicon"))),
+	     HTML("<br>"),
+             h3(align="center","Add reference genes:"),
              fluidRow(
              column(4,offset = 0,
                     checkboxGroupInput("refnucl", label="Nuclear Genes",
@@ -213,58 +142,57 @@ shinyUI(
                                        inline = FALSE)
              )
              )
-      ), class="jumbotron") ,
-        column(4, offset =0 ,tags$div(
-          h2("Help Box:"),
-          p("Search for your lncRNAs of interest and press GO to obatain the plots."),
-          h3("What is being displayed?"),
-          p('LncATLAS displays the subcellular localisation for user-selected lncRNAs. Only GENCODE-annotated lncRNA genes are present, and may be accessed using their identifier (ENSG...) or official Gene Name. The localisation of your selected gene, or genes, will be displayed below for available cell types and cellular compartments. Please note that some plots display data for individual cell types, that may be selected using "Select a Cell Line" button.'),
-          p('This localisation is expressed in units of Relative Concentration Index (RCI) - a comparison of the concentration of a gene, per unit mass of RNA, between two cellular compartments. For more information about how this data was analysed, please consult the "About LncATLAS" tab above.'),
-          p('Raw data for individual genes, or all genes, may be accessed using the "Download Raw Data" button below, or from the "Get Raw Data" tab above, respectively. All plots may be downloaded using "Download Plot" buttons.'),
-          downloadButton('downloadData', 'Download raw data')
+      , class="jumbotron") ,
+        column(5, offset =2 ,
+          h2(align = "center","Help box:"),
+          p("Search for your lncRNAs of interest and press GO to obtain the plots."),
+          p("You can select at least 3 genes in both the search and reference inputs. If 3 are selected a high resolution screen is recommended."),
+          h3(align = "center","What is being displayed?"),
+          p(class="text-justify",'LncATLAS displays the subcellular localisation for user-selected lncRNAs. Only GENCODE-annotated lncRNA genes are present, and may be accessed using their identifier (ENSG...) or official Gene Name. The localisation of your selected gene, or genes, will be displayed below for available cell types and cellular compartments. Please note that some plots display data for individual cell types, that may be selected using "Select a Cell Line" button.'),
+          p(class="text-justify",'This localisation is expressed in units of Relative Concentration Index (RCI) - a comparison of the concentration of a gene, per unit mass of RNA, between two cellular compartments. For more information about how this data was analysed, please consult the "About LncATLAS" tab above.'),
+          p(class="text-justify",'Raw data for individual genes, or all genes, may be accessed using the "Download Raw Data" button below, or from the "Get Raw Data" tab above, respectively. All plots may be downloaded using "Download Plot" buttons.'),
+          column(12,align="center",downloadButton('downloadData', 'Download raw data'))
           ,class="jumbotron"))
-      )
+      ))
     ),
     fluidRow(column(8, offset=2,align="center", h3("S1 - Inspect the cytoplasmic-nuclear localisation of your gene of interest (GOI)"),hr())),
-    fluidRow(column(8, offset=2,align="center",h2("Plot 1 - Cytoplasmic/Nuclear Localisation: Real values (all cell types)", style="text-align: center;",
+    fluidRow(column(8, offset=2,align="center",h2("Plot 1 - Cytoplasmic/Nuclear Localisation: RCI and expression values (all cell types)", style="text-align: center;",
        class = "s1"))),
     fluidRow(column(2, align = "center",verarrow),
-      column(8, align="center",
-             plotOutput("ratioPlot",width = "100%", height = "650px")
+      column(9, align="center",
+             plotOutput("ratioPlot",width = "100%", height = "700px")
     )),
     fluidRow(column(8, offset=2,align="center",downloadButton('downloadPlotR1', 'Download plot'))),
     fluidRow(class="top-buffer"),
     fluidRow(column(8, offset=2,align="center", h3("S2 - Inspect the cytoplasmic-nuclear localisation of your GOI within the distribution of all genes"),hr())),
     fluidRow(
-      column(8, offset=2, align="center",h2("Plot 2 - Cytoplasmic/Nuclear Localisation: Distribution (all cell types)", style="text-align: center;",
+      column(8, offset=2, align="center",h2("Plot 2 - Cytoplasmic/Nuclear Localisation: RCI distribution (all cell types)", style="text-align: center;",
          class = "s2")
       )),
     fluidRow(column(8,offset=2,align="center", HTML("<p><b> Note: </b> In the next plot <code>n</code> indicates the total number of genes in each group and <code>m</code> the median RCI value per group. The group percentile corresponding to each gene is also displayed next to the gene point.</p>"))),
     fluidRow(id = "section2",
       column(2,align = "center",verarrow),
-      column(10, align="center",
+      column(9, align="center",
             plotOutput("distributionAlt",width = "100%", height = "700px"),
             downloadButton('downloadPlotR2', 'Download plot')
       )),
       fluidRow(class="top-buffer"),
       fluidRow(
         column(6, offset = 3, align="center",
-          h2("Plot 3 - Cytoplasmic/Nuclear Localisation: Distribution (individual cell type)", style="text-align: center;",
+          h2("Plot 3 - Cytoplasmic/Nuclear Localisation: RCI distribution (individual cell type)", style="text-align: center;",
             class = "s2")
         )),
       fluidRow(
         column(2, offset =1, h3("Select a Cell Line:"),
-                  selectInput("cellLine","Choose a Cell Line to get a zoom in into the distribution.",cl.name),
+                  selectInput("cellLine","Choose a cell line to zoom in on the distribution.",cl.name),
                   class="jumbotron"),
-        column(7, align="center",
+        column(8, align="center",
                plotOutput("distribution",width = "100%", height = "575px")
                )),
-      fluidRow(column(3,offset=3,align="center",h3("Nuclear"),
-               HTML("<p class = 'arrows'> <span>&#8592;</span> </p>")),
-               column(3,align="center", h3("Cytoplasmic"),
-               HTML("<p class = 'arrows'> <span>&#8594;</span> </p>"))
+      fluidRow(column(8,offset=3,align="center",class='vcenter',
+               HTML("<p class='horarrow'>&#8592;<em> Nuclear &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Cytoplasmic </em> &#8594;</p>"))
                ),
-        fluidRow(column(2,offset=5,align="center",downloadButton('downloadPlotD1', 'Download plot'))),
+        fluidRow(column(8,offset=3,align="center",downloadButton('downloadPlotD1', 'Download plot'))),
         fluidRow(class="top-buffer")
 
       ,
@@ -274,44 +202,53 @@ shinyUI(
           class = "s2")
       )),
     fluidRow( column(2,align = "center",verarrow),
-      column(6,offset=1,align="center",
-            plotOutput("distribution2D",width = "100%", height = "575px")
+      column(8,offset=0,align="center",
+            plotOutput("distribution2D",width = "100%", height = "700px")
       )),
+    fluidRow(column(6,offset=3,
+      HTML("<p><b>Note:</b> When 2 genes present similar values in both axis, one of
+      them might get hidden to avoid problems in readability due to
+      the overlap.</p>"))),
     fluidRow(column(2,offset=5,
     downloadButton('downloadPlotD2', 'Download plot'))),
     fluidRow(class="top-buffer"),
     fluidRow(column(8, offset=2,align="center", h3("S3 - Inspect the localisation of your GOI at sub-compartment level"),hr())),
     fluidRow( id = "section3",
-      column(8, offset = 2, align="center",
-             h2("Plot 5 - Subcytoplasmic, Subnuclear Localisation: K562 cells", class = "text-align s3"),
-             plotOutput("distroK",width = "90%", height = "450px"))
+      column(8,offset=2,
+        h2("Plot 5 - Subcytoplasmic, Subnuclear Localisation: K562 cells", class = "text-align s3"))),
+    fluidRow(
+      column(2,align="center",
+        HTML('<img src="a.svg" class="img-fluid" alt="enrich" heigth = 300px>')),
+      column(8, align="center",
+             plotOutput("distroK",width = "100%", height = "500px"))
     ),
 fluidRow(id = "p",
-         column(4, offset = 4, align="center",
+         column(6, offset = 3, align="center",
 
-         HTML("<p><b>Note</b> that data for <b>chromatin, nucleoplasm and nucleolus </b> in this plot were obtained from a <b>total RNA</b> extraction contrary to the other figures that were obtained with a enriched polyA sample. <br> <b> Note 2: </b>  In the plot <code>n</code> indicates the total number of genes in each group. The group percentile corresponding to each gene is also displayed next to the gene point.<br></p>"),
+         HTML("<p><b>Note:</b> Data for <b>chromatin, nucleoplasm and nucleolus </b> in this plot were obtained from a <b>total RNA</b> extraction contrary to the other figures that were obtained with a enriched polyA sample. <br> <b> Note 2: </b>  In the plot <code>n</code> indicates the total number of genes in each group. The group percentile corresponding to each gene is also displayed next to the gene point.<br></p>"),
          downloadButton('downloadPlotK', 'Download plot')))
   ),
   tabPanel("Get Raw Data",
-        h2("Retrieve raw data from ENSEMBL IDs"),
-        p("Enter in the box a list of ENSMBL IDs, conding or non-coding to retrieve the raw values from our database."),
-        radioButtons("downltype", label = h3("Choose the data to retrieve"),
+	   fluidRow(column(12,align="center",
+        	h2("Retrieve raw data from ENSEMBL IDs"),
+        	p("Enter in the box a list of ENSEMBL IDs, conding or non-coding to retrieve the raw values from our database."))),
+        fluidRow(column(4,offset=2,align="center",
+	    	radioButtons("downltype", label = h3("Choose the data to retrieve"),
     choices = list("RCI - Localisation values" = 1, "All - Localisation and expression" = 2, "FPKM - Expression values" = 3),
-    selected = 1),
-        hr(),
-        fluidRow(
-          column(width=4,offset=4,
-              HTML('<textarea id="listretrive" rows="10" cols="40">ENSG00000251562\n...</textarea>'))
-        ),
-        fluidRow(column(width=2,offset=5,
-          downloadButton('downloadData2', 'Download Selected raw data'),
-          class="center-block;",style="margin-top:15px"
+    selected = 1)),
+		 column(4,align="center",
+			h3(align="center","Insert a ENSEMBL gene ID list:"),
+			HTML('<textarea id="listretrive" rows="8" cols="40">ENSG00000251562\n...</textarea>')
         )),
-         fluidRow(column(width=2,offset=5,
+        fluidRow(column(width=2,offset=4,
+          downloadButton('downloadData2', 'Download raw data from the list'),
+          class="center-block;",style="margin-top:15px"
+        ),
+         column(width=2,offset=0,
           downloadButton('retrieveall', 'Download All raw data'),
           class="center-block;",style="margin-top:15px"
-        )),
-        fluidRow(column(width=8,offset=2,
+        )),hr(),
+        fluidRow(column(width=6,offset=3,
                         tableOutput("retrieve"),style="margin-top:15px"
         ))
 

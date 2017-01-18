@@ -1,0 +1,122 @@
+.container {
+    display: flex;
+}
+ul.nav-pills {
+    top: 25px;
+    position: fixed;
+}
+.jumbotron p {
+    font-size: 16px;
+}
+ol li {
+    font-size: 16px;
+}
+h1 {
+    font-family: 'Secular One', sans-serif;
+    font-size: 80px;
+    text-align: center;
+}
+body {
+    position: relative;
+}
+h2 {
+    font-family: 'Secular One', sans-serif;
+    font-size: 35px;
+}
+h3 {
+    font-family: 'Secular One', sans-serif;
+    font-size: 30px;
+}
+h4 {
+    text-align: center;
+}
+/*
+        #retrieve{
+      #      text-align:center;
+       # }
+        #svgMain {
+        #    margin-left:auto;
+         #   margin-right:auto;
+          #  display:block;}
+            */
+
+.s1 {
+    color: chocolate;
+}
+.s3 {
+    color: olive;
+}
+.s2 {
+    color: navy;
+}
+.arrows {
+    font-size: 100px;
+}
+.vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}
+.shiny-progress .progress {
+    position: absolute;
+    width: 100%;
+    top: 0px;
+    height: 15px;
+    margin: 0px;
+}
+.shiny-progress .bar {
+    opacity: 0.7;
+    transition-duration: 500ms;
+}
+.shiny-progress .progress-text {
+    position: absolute;
+    right: 10px;
+    height: 50px;
+    width: 240px;
+    background-color: #eef8ff;
+    margin: 0px;
+    padding: 2px 3px;
+    opacity: 0.85;
+}
+.shiny-progress .progress-text .progress-message {
+    padding: 0px 3px;
+    font-weight: bold;
+    font-size: 90%;
+}
+.shiny-progress .progress-text .progress-detail {
+    padding: 0px 3px;
+    font-size: 80%;
+}
+.top-buffer {
+    margin-top: 250px;
+}
+.glyphicon-remove {
+    color: #e05959;
+}
+.glyphicon-ok {
+    color: #acf274;
+}
+.shiny-output-error-validation {
+    color: #ed8b36;
+    font-size: 25px;
+}
+/* to avoid help box and search box unaligned*/
+
+.equal {
+    display: flex;
+    flex-wrap: wrap;
+}
+.equal > div[class*='col-'] {
+    display: flex;
+    flex-direction: column;
+}
+/* for the horizontal arrows */
+
+.horarrow {
+    font-size: 100px;
+}
+.horarrow em {
+    font-size: 30px;
+    font-family: 'Secular One', sans-serif;
+    font-style: normal;
+}

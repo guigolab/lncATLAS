@@ -8,15 +8,24 @@ group <- "coding_type"
 
 
 
+
 extreme <- function(vec,values) {
   results <- c()
+  total <- length(vec)
   for (v in values) {
-    total <- length(vec)
-    ind <- which(vec == v)[1]
+    fin <- which(vec == v)
+    if (length(fin) == 0){
+      ind <- NA
+    } else {
+      ind <- fin[1]
+    }
     pos <- which(order(vec) == ind)
-    res <-  pos / total
+    if (length(pos)==0){
+      res = NA
+    } else {
+      res <-  pos / total
+    }
     results <- c(results,res)
-    
   }
   return(results)
 }
@@ -61,7 +70,7 @@ StatExtreme <- ggproto("StatExtreme", Stat,
                     data.dn <- density(data$x)
                     data.dn <- data.frame(x=data.dn$x,y=data.dn$y)
                     val <- data$val[1]
-                   
+
                     if (val > mean(data$x)) {
                       if(val > max(data$x)){warning("Value out of the scope")}
                       data.dn <- data.dn[data.dn$x > val, , drop = FALSE]
@@ -76,10 +85,10 @@ StatExtreme <- ggproto("StatExtreme", Stat,
 ## this is the layer
 
 stat_extreme <- function(mapping = NULL, data = NULL, geom = "area",
-                       position = "identity", na.rm = FALSE, show.legend = NA, 
+                       position = "identity", na.rm = FALSE, show.legend = NA,
                        inherit.aes = TRUE, ...) {
   layer(
-    stat = StatExtreme, data = data, mapping = mapping, geom = geom,  
+    stat = StatExtreme, data = data, mapping = mapping, geom = geom,
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
     params = list(na.rm = na.rm, fill = "#386cb0", alpha=0.3,  ...)
   )
@@ -121,7 +130,7 @@ getRest <- function(vec){
     return(vec[1])
   } else {
     return(vec[2])
-  } 
+  }
 }
 
 
@@ -145,7 +154,7 @@ getCol <- function(vec){
     return(c(0,1))
   }
 }
-  
+
 setUpPos <- function(vec){
   if (vec[1] > vec[2]) {
     #this is when the gene is cyto

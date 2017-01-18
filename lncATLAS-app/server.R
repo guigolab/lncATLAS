@@ -639,7 +639,8 @@ isolate(unlink(sess_id,recursive = TRUE))
       geom_point(data = gene.df, aes(shape = name ),size = 3) +
       geom_text(data = gene.df ,
                 aes(label = paste0(round(extr*100,1),"%")),
-                hjust=-0.5,size = 5) +
+                hjust=-0.5,size = 5,
+                check_overlap = TRUE) +
       geom_text(data=n.df, aes(label=paste0("n = ",n)), position = "identity",
                 vjust = -1,size = 5) +
       geom_text(data=n.df, aes(label=paste0("m = ",round(m,2))),
@@ -649,7 +650,9 @@ isolate(unlink(sess_id,recursive = TRUE))
       scale_colour_Publication(labels=c("lncRNA","mRNA")) +
       scale_shape_manual(values = c(8:(7+length(name)))) +
       theme_lncatlas_distrK() +
-      labs(x="Cell lines",
+      theme(axis.text.x = element_text(angle=45,vjust=0.5),
+	    axis.title.x = element_blank()) +
+      labs(x="",
            y="CN RCI ") +
       annotate("text", x = cls.vec[length(cls.vec)] , y = -Inf,
                label = "lncATLAS",
@@ -772,7 +775,7 @@ isolate(unlink(sess_id,recursive = TRUE))
       theme_lncatlas_2Ddistr() +
       scale_colour_Publication(labels=c(n1,n2)) +
       guides(colour = guide_legend(title = "")) +
-      labs(x = "Cell expression ",
+      labs(x = "Cell expression (log10(FPKM)) ",
            y = "CN RCI ") +
       scale_y_continuous(expand = c(0.05, 1)) +
       annotate("text", x = Inf, y = -Inf, label = "lncATLAS",
@@ -784,120 +787,7 @@ isolate(unlink(sess_id,recursive = TRUE))
     g
   })
 
-  #### DISTRIBUTION 2D 2 ####
 
-
-  output$distribution2D2 <- renderPlot({
-
-    geneID <- re.id()
-
-
-
-    geneID <- unlist(strsplit(geneID,","))
-
-    name <- getGeneName(geneID)
-
-
-    name.title <- paste(name,collapse = " : ")
-
-
-
-    geneID.cond <- paste("ensembl_gene_id = '",geneID, sep="")
-    geneID.str.cond <- paste(geneID.cond, collapse = "' OR ")
-
-    cond2 <- paste0("(data_source_data_types_name = 'ratio2' OR ",
-                    "data_source_data_types_name = 'cell') ",
-                    "AND "," ( ",
-                    geneID.str.cond,"')")
-    ij <- paste0("genes",
-                 " INNER JOIN ",
-                 "expression",
-                 " ON ensembl_gene_id = genes_ensembl_gene_id")
-    columns <- "genes_ensembl_gene_id AS id,expression_value,data_source_data_types_name AS source,coding_type,bio_type, data_source_expression_sites_name AS cellline"
-
-
-    query2 <- paste0(
-      "SELECT ",
-      columns,
-      " FROM ",
-      ij,
-      " WHERE ",
-      cond2,
-      ";"
-    )
-
-    cn <- lncatlasConnect()
-    gene.df <- DBI::fetch(dbSendQuery(cn, query2),n=-1)
-    suppressWarnings(dbDisconnect(cn))
-
-    distr.df <- get.distro.all()
-
-
-    #distr.df$lab <- paste0(distr.df$source,distr.df$cellline)
-
-    unique.genes <- list()
-
-    for (i in unique(distr.df$cellline)) {
-      cell.genes <- distr.df[distr.df$source == "cell" & distr.df$cellline == i ,]$geneid
-      ratio.genes <- distr.df[distr.df$source == "ratio2" & distr.df$cellline == i,]$geneid
-      unique.genes[[i]] <- outersect(cell.genes,ratio.genes)
-    }
-
-    for (i in names(unique.genes)){
-      distr.df <- distr.df[!(distr.df$geneid %in% unique.genes[[i]] &
-                               distr.df$cellline == i),]
-    }
-
-
-
-    ncgenes <- distr.df[distr.df$coding_type == "nc",]$geneid
-    cgenes <- distr.df[distr.df$coding_type == "coding",]$geneid
-
-    l1 <- length(unique.genes[unique.genes %in% ncgenes])
-    l2 <- length(unique.genes[unique.genes %in% cgenes])
-
-    n1 <- paste0("lncRNA (n = ",
-                 l1,
-                 ")")
-    n2 <- paste0("mRNA (n = ",
-                 l2,
-                 ")")
-
-
-    plot.df <- distr.df[distr.df$source == "cell" ,]
-    plot.df$ratio <- distr.df[distr.df$source == "ratio2" ,]$expression_value
-
-    plot.df$coding_type <- factor(plot.df$coding_type,
-                                   levels = c("nc","coding"),ordered = TRUE)
-
-    plot2.df <- gene.df[gene.df$source == "cell",]
-    plot2.df$ratio <- gene.df[gene.df$source == "ratio2",]$expression_value
-    plot2.df$name <- getGeneName(gene.df$id)
-
-    ggplot(data=plot.df,
-           aes(x=log10(expression_value),y=ratio)) +
-      geom_density2d(aes(colour = coding_type)) +
-      facet_wrap(~cellline) +
-      geom_point(
-        data = plot2.df,
-        aes(x=log10(expression_value),y=ratio),
-        size = 3) +
-      geom_text(
-        data = plot2.df,
-        aes(x=log10(expression_value),y=ratio, label = name),
-        check_overlap = TRUE,
-        vjust = -2, size = 5) +
-      ggtitle(name.title) +
-      theme_lncatlas_2Ddistr() +
-      scale_colour_Publication(labels=c(n1,n2)) +
-      guides(colour = guide_legend(title = group)) +
-      labs(x = "Cell Expression",
-           y = "Cyto/Nuclear Ratio ") +
-      scale_y_continuous(expand = c(0.05, 1)) +
-      annotate("text", x = Inf, y = -Inf, label = "PROOF ONLY",
-               hjust=1.1, vjust=-1.1, col="black", cex=6,
-               fontface = "bold", alpha = 0.8)
-  })
 
 
   gene.table <- reactive({
@@ -991,7 +881,7 @@ isolate(unlink(sess_id,recursive = TRUE))
 
   output$distroK <- renderPlot({
     # to avoid unclosing exits
-    on.exit(progress$close())
+
 
     # I obtain the data
     distr.df <- get.distroK()
@@ -1000,6 +890,8 @@ isolate(unlink(sess_id,recursive = TRUE))
     # getting specifics genes
     geneID <- re.id()
     geneID <- unlist(strsplit(geneID,","))
+
+    on.exit(progress$close())
 
     # validate
     validate(
@@ -1089,7 +981,7 @@ isolate(unlink(sess_id,recursive = TRUE))
       scale_colour_Publication(labels=c("lncRNA","mRNA")) +
       theme_lncatlas_distrK() +
       labs(x="Compartment",
-           y="subcompartment RCI ") +
+           y="RCI ") +
       geom_text(data=gene.df, aes(label=paste0(round(extr*100,1),"%")),
                 vjust = -1.25,check_overlap = TRUE,
                 color = "black", position="dodge",size = 5) +
@@ -1103,14 +995,12 @@ isolate(unlink(sess_id,recursive = TRUE))
                fontface = "bold", alpha = 0.8) +
       guides(colour = guide_legend(title = ""),
              shape = guide_legend(title = "genes ")) +
-      scale_x_discrete(labels=c("Insoluble","Membrane","Chromatin",
+      scale_x_discrete(labels=c("Insoluble \n fraction","Cell \n membrane","Chromatin",
       "Nucleoplasm","Nucleolus"))
     path = paste(sess_id,"plotK.pdf",sep="/")
     ggsave(path, g)
-
-    progress$set(message = "End", value = 1)
+    progress$set(message = "All plot will be displayed now", value = 1)
     g
-
   })
   output$downloadPlotK <- downloadHandler(
     filename = function() {
