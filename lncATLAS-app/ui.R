@@ -240,12 +240,13 @@ fluidRow(id = "p",
 			h3(align="center","Insert a ENSEMBL gene ID list:"),
 			HTML('<textarea id="listretrive" rows="8" cols="40">ENSG00000251562\n...</textarea>')
         )),
-        fluidRow(column(width=2,offset=4,
-          downloadButton('downloadData2', 'Download raw data from the list'),
+        fluidRow(
+         column(width=2,offset=4,
+          downloadButton('retrieveall', 'Download All raw data'),
           class="center-block;",style="margin-top:15px"
         ),
-         column(width=2,offset=0,
-          downloadButton('retrieveall', 'Download All raw data'),
+        column(width=2,offset=0,
+          downloadButton('downloadData2', 'Download raw data from the list'),
           class="center-block;",style="margin-top:15px"
         )),hr(),
         fluidRow(column(width=6,offset=3,
