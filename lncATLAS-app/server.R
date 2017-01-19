@@ -280,7 +280,7 @@ isolate(unlink(sess_id,recursive = TRUE))
         gene.id <- paste(gene.id,cyto.id, sep = ",")
       }
       gene.id <- as.character(gene.id)
-      return(textInput("geneId", label = h3("Enter a Ensembl ID:"),
+      return(textInput("geneId", label = h3("Search by ENSEMBL gene ID:"),
                   value = gene.id))
       }
   })
