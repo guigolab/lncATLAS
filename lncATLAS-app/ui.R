@@ -39,7 +39,18 @@ verarrow <- HTML("<div class = 'row'>
                     <div class = 'container-fluid'>
                      <p class = 'arrows'>&#8593;</p> <h3> Cytoplasmic</h3>
                     </div></div>
-                    <div class = 'row' style = 'height:200px'>
+                    <div class = 'row' style = 'height:150px'>
+                    </div>
+                    <div class = 'row'>
+                    <div class = 'container-fluid'>
+                    <h3> Nuclear</h3> <p class = 'arrows'>&#8595;</p>
+                    </div></div>
+                    ")
+verarrow2 <- HTML("<div class = 'row'>
+                    <div class = 'container-fluid'>
+                     <p class = 'arrows'>&#8593;</p> <h3> Cytoplasmic</h3>
+                    </div></div>
+                    <div class = 'row' style = 'height:240px'>
                     </div>
                     <div class = 'row'>
                     <div class = 'container-fluid'>
@@ -60,20 +71,22 @@ shinyUI(
   ),
     tabPanel("lncATLAS",
     # then 3 rows
-    fluidRow(
-      column(2, offset = 1,hr(),
+    fluidRow(class="center-block",
+      column(2,offset=1,
              HTML('<img src="lncatlas.logo2.svg" class="img-fluid center-block" alt="Logo HERE" width = 250px>')),
               # img(src = "", class="center-block;")
-      column(6,
-             h1("lncATLAS")
+      column(4,offset=1,
+             h1("lncATLAS"),class="center-text"
       ),
-      column(2, hr(),
-             HTML('<img src="CRG_logo_colour.svg" class="img-fluid" alt="Logo HERE" width = 250px>')
-              # img(src = "", class="center-block;")
-
+      column(2,
+             HTML('<img src="CRG_logo_colour.svg" class="img-fluid center-block" alt="Logo HERE" width = 150px>')
       )
 
-    ),fluidRow(
+    ),
+    conditionalPanel(condition="$('html').hasClass('shiny-busy')",
+                 tags$div("Shiny is busy...",id="loadmessage")
+),
+    fluidRow(
     fluidRow( id="section1",
       hr(),
 #       column(2,
@@ -88,7 +101,7 @@ shinyUI(
     column(10,offset=1,
 
     tags$div(class = "row equal",
-      column(5,
+      column(5,offset =0,
              h2(align = "center","Search box:"),
              h3(align="center","Quick start:"),
              HTML("<p>Find the subcellular localisation of your long non-conding RNA of interest:</p>
@@ -119,7 +132,15 @@ shinyUI(
                condition = "input.e1 != '' | input.refnucl != '' | input.refcyto != '' | input.refdual != ''",
                 uiOutput("ID")
                ),
-             actionButton("go", "GO",icon("send",lib="glyphicon"))),
+               conditionalPanel( # this is the good gene
+                 condition = "((input.e1 == '' & (input.refnucl == '' & input.refcyto == '' & input.refdual == '')) & input.geneIdtmp != '') | ((input.e1 != '' | input.refnucl != '' | input.refcyto != '' | input.refdual != '') & input.geneId != '' )",
+                 actionButton("go",HTML(' GO <span class="glyphicon glyphicon-send" style="color:#229305"></span>'))
+                 ),
+                conditionalPanel(
+                  condition = "((input.e1 == '' & (input.refnucl == '' & input.refcyto == '' & input.refdual == '')) & input.geneIdtmp == '') | ((input.e1 != '' | input.refnucl != '' | input.refcyto != '' | input.refdual != '') & input.geneId == '' )",
+                  actionButton("nogo",HTML(' GO <span class="glyphicon glyphicon-remove" style="color:#93052b"></span>'))
+                  )
+              ),# here ends the column
 	     HTML("<br>"),
              h3(align="center","Add reference genes:"),
              fluidRow(
@@ -142,8 +163,8 @@ shinyUI(
                                        inline = FALSE)
              )
              )
-      , class="jumbotron") ,
-        column(5, offset =2 ,
+      , class="jumbotron setpad center-block") ,
+        column(5, offset =1 ,
           h2(align = "center","Help box:"),
           p("Search for your lncRNAs of interest and press GO to obtain the plots."),
           p("You can select at least 3 genes in both the search and reference inputs. If 3 are selected a high resolution screen is recommended."),
@@ -152,7 +173,7 @@ shinyUI(
           p(class="text-justify",'This localisation is expressed in units of Relative Concentration Index (RCI) - a comparison of the concentration of a gene, per unit mass of RNA, between two cellular compartments. For more information about how this data was analysed, please consult the "About LncATLAS" tab above.'),
           p(class="text-justify",'Raw data for individual genes, or all genes, may be accessed using the "Download Raw Data" button below, or from the "Get Raw Data" tab above, respectively. All plots may be downloaded using "Download Plot" buttons.'),
           column(12,align="center",downloadButton('downloadData', 'Download raw data'))
-          ,class="jumbotron"))
+          ,class="jumbotron setpad center-block")) # here
       ))
     ),
     fluidRow(column(8, offset=2,align="center", h3("S1 - Inspect the cytoplasmic-nuclear localisation of your gene of interest (GOI)"),hr())),
@@ -185,23 +206,29 @@ shinyUI(
       fluidRow(
         column(2, offset =1, h3("Select a Cell Line:"),
                   selectInput("cellLine","Choose a cell line to zoom in on the distribution.",cl.name),
-                  class="jumbotron"),
+                  class="jumbotron", id="lowpad"),
         column(8, align="center",
                plotOutput("distribution",width = "100%", height = "575px")
                )),
-      fluidRow(column(8,offset=3,align="center",class='vcenter',
-               HTML("<p class='horarrow'>&#8592;<em> Nuclear &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Cytoplasmic </em> &#8594;</p>"))
-               ),
+      fluidRow(column(8,offset=3,
+                fluidRow(style="padding-left: 65px;",
+                    column(2,HTML("<p class='horarrow'>&#8592;</p>")),
+                    column(3,
+                      HTML("<p class='horarrowtext'>Nuclear</p>")),
+                    column(3,offset = 2,
+                      HTML("<p class='horarrowtext'>Cytoplasmic</p>")),
+                    column(2,HTML("<p class='horarrow'>&#8594;</p>"))
+                  ))),
+        fluidRow(column(6,offset=4,align="center", HTML("<p><b> Note: </b> The blue colouring of the inside area corresponds to the genes with more extreme values than the gene selected. This follows a visualisation purpose to help users see the position of their gene in the distribution.</p>"))),
         fluidRow(column(8,offset=3,align="center",downloadButton('downloadPlotD1', 'Download plot'))),
         fluidRow(class="top-buffer")
-
       ,
     fluidRow(
       column(6,align="center",offset=3,
         h2("Plot 4 - Cytoplasmic/Nuclear Localisation: Comparison with expression (individual cell type)",style="text-align: center;",
           class = "s2")
       )),
-    fluidRow( column(2,align = "center",verarrow),
+    fluidRow( column(2,align = "center",verarrow2),
       column(8,offset=0,align="center",
             plotOutput("distribution2D",width = "100%", height = "700px")
       )),
@@ -217,7 +244,7 @@ shinyUI(
       column(8,offset=2,
         h2("Plot 5 - Subcytoplasmic, Subnuclear Localisation: K562 cells", class = "text-align s3"))),
     fluidRow(
-      column(2,align="center",
+      column(2,align="center",style="padding-top: 20px;",
         HTML('<img src="a.svg" class="img-fluid" alt="enrich" heigth = 300px>')),
       column(8, align="center",
              plotOutput("distroK",width = "100%", height = "500px"))

@@ -103,9 +103,9 @@ isolate(unlink(sess_id,recursive = TRUE))
       } else if (input$downltype == 3){
         query.all <- paste0(query.all, " WHERE data_source_data_types_name NOT REGEXP 'ratio*';")
       } else{query.all <- paste0(query.all,";")}
-      progress$set(message = "Conecting to the Database", value = 0.25)
+      progress$set(message = "Conecting to the Database", value = 0.33)
       cn <- lncatlasConnect()
-      progress$set(message = "Retrieving the Data", value = 0.5)
+      progress$set(message = "Retrieving the Data", value = 0.66)
       table.out <- DBI::fetch(dbSendQuery(cn, query.all),n=-1)
       suppressWarnings(dbDisconnect(cn))
       colnames(table.out) <- c("ENSEMBL ID","Data Source","Data Type",
@@ -120,7 +120,7 @@ isolate(unlink(sess_id,recursive = TRUE))
       }
 
       on.exit(progress$close())
-      progress$set(message = "Writing the data", value = 0.75)
+      progress$set(message = "Writing the data", value = 0.95)
       write.table(table.out,file,quote=FALSE,sep=',',row.names = FALSE)
     })
 
@@ -251,6 +251,22 @@ isolate(unlink(sess_id,recursive = TRUE))
     names = unlist(strsplit(input$e1,"[, \t]+"))
     ids = getID(names)
 
+    if(length(names)> length(ids)){
+      correct <- checkName(names)
+      incorrect <- names[! toupper(names) %in% toupper(correct)]
+      if (length(incorrect) > 1){
+        txt <- paste(incorrect[-length(incorrect)],collapse=", ")
+        incorrect <- paste(txt,incorrect[length(incorrect)], sep ="  and ")
+      }
+      message = paste(incorrect," gene symbols not found in lncATLAS.")
+      return(
+        column(10,offset=1,align="center",
+          icon("remove", lib = "glyphicon", "fa-3x"),
+          p(message)
+        )
+      )
+    }
+
     if (grepl("^ENSG*",input$geneIdtmp)){
       oldids = unlist(strsplit(input$geneIdtmp,"[, \t]+"))
       ids <- c(ids,oldids)
@@ -293,7 +309,14 @@ isolate(unlink(sess_id,recursive = TRUE))
   output$ratioPlot <- renderPlot({
 
     geneID <- re.id()
+    validate(
+      need(try(length(geneID) > 0),
+           "There is no data for this gene. \n Confirm that the gene id uses GENCODE v24.")
+    )
+
     geneID <- unlist(strsplit(geneID,","))
+
+
     # progress update
     progress$set(message = "Ratio Plot", value = 0.1)
 
@@ -320,10 +343,18 @@ isolate(unlink(sess_id,recursive = TRUE))
 
     suppressWarnings(dbDisconnect(cn))
 
+    hasRCI = dplyr::filter(ratios.cell.df,source == 'ratio2')[,"value"]
+    hasRCI = all(is.na(hasRCI))
+    validate(
+      need(try(!hasRCI),
+           "There is no localisation data for this gene.")
+    )
+
+
     # I obtain the plot data frame by filter
     plot.df <- dplyr::filter(ratios.cell.df,source == 'ratio2')
     #plot.df$whole.cell <- dplyr::filter(ratios.cell.df,source == 'cell')$value
-    d <- log2(dplyr::filter(ratios.cell.df,source == 'nucleus')$value)
+    d <- log10(dplyr::filter(ratios.cell.df,source == 'nucleus')$value)
     plot.df$d <- d
 
     # i select the na values
@@ -398,7 +429,6 @@ isolate(unlink(sess_id,recursive = TRUE))
       label.gg +
       facet_grid(. ~ gene_id) +
       ggtitle(name.title) +
-      theme_lncatlas_Ratio() +
       scale_fill_lncatlas_Ratio() +
       labs(x = "Cell lines",
            y = "CN RCI") +
@@ -406,7 +436,8 @@ isolate(unlink(sess_id,recursive = TRUE))
                hjust=1, vjust=-1.1, col="black", cex=6,
                fontface = "bold", alpha = 0.8,size = 5) +
       ylim(limits) +
-      guides(fill = guide_legend("Nuclear expression (log2(FPKM))"))
+      guides(fill = guide_legend("Nuclear expression (log10(FPKM))")) +
+      theme_lncatlas_Ratio + text_sizes
     path = paste(sess_id,"plotR1.pdf",sep="/")
     ggsave(path, g)
     progress$set(message = "Zoom in", value = 0.2)
@@ -419,6 +450,11 @@ isolate(unlink(sess_id,recursive = TRUE))
   output$distribution <- renderPlot({
 
     geneID <- re.id()
+
+    validate(
+      need(try(length(geneID) > 0),
+           "There is no data for this gene. \n Confirm that the gene id uses GENCODE v24.")
+    )
 
     geneID <- unlist(strsplit(geneID,","))
 
@@ -467,8 +503,11 @@ isolate(unlink(sess_id,recursive = TRUE))
     suppressWarnings(dbDisconnect(cn))
 
 
-
-
+    hasRCI <- !all(is.na(gene.df$ratio))
+    validate(
+      need(try(hasRCI),
+           "There is no data for this cell type and compartment.")
+    )
 
     distr.df <- get.distro()
 
@@ -515,7 +554,7 @@ isolate(unlink(sess_id,recursive = TRUE))
         size = 5) +
       scale_y_continuous(limits=c(0, NA), expand = c(0, 0)) +
       ggtitle(name.title) +
-      theme_lncatlas_distr() +
+      tdist + text_sizes +
       scale_colour_Publication(labels = c(n1, n2)) +
       scale_fill_Publication() +
       guides(colour = guide_legend(title = "")) +
@@ -527,7 +566,7 @@ isolate(unlink(sess_id,recursive = TRUE))
           y = "Density")
     path = paste(sess_id,"plotD1.pdf",sep="/")
     ggsave(path, g)
-   progress$set(message = "Ratio Distro", value = 0.4)
+   progress$set(message = "Ratio Distro", value = 0.35)
    g
   })
 
@@ -564,8 +603,21 @@ isolate(unlink(sess_id,recursive = TRUE))
 
     # getting specifics genes
     geneID <- re.id()
+    # validating the gene existst.
+    validate(
+      need(try(length(geneID) > 0),
+           "There is no data for this gene. \n Confirm that the gene id uses GENCODE v24.")
+    )
     geneID <- unlist(strsplit(geneID,","))
+    #opt this
     gene.df <- distr.df[ distr.df$geneid %in% geneID ,]
+
+    hasRCI <- !all(is.na(gene.df$expression_value))
+    validate(
+      need(try(hasRCI),
+           "There is no localisation data for this gene.")
+    )
+
     name <- getGeneName(unique(gene.df$geneid))
     name.title <- paste(name,collapse = " : ")
     names(name) <- unique(gene.df$geneid)
@@ -633,7 +685,7 @@ isolate(unlink(sess_id,recursive = TRUE))
     dodge <- position_dodge(width = 0.8)
     ylimit = max(n.df$expression_value)
 
-    g <- ggplot(distr.df,aes(cellline,expression_value,color = coding_type)) +
+    g  <- ggplot(distr.df,aes(cellline,expression_value,color = coding_type)) +
       geom_violin(position = dodge) +
       geom_boxplot(width=0.2,outlier.size = 0.05,position=dodge) +
       geom_point(data = gene.df, aes(shape = name ),size = 3) +
@@ -649,7 +701,7 @@ isolate(unlink(sess_id,recursive = TRUE))
       expand_limits(y=ylimit+1) +
       scale_colour_Publication(labels=c("lncRNA","mRNA")) +
       scale_shape_manual(values = c(8:(7+length(name)))) +
-      theme_lncatlas_distrK() +
+      tk + text_sizes +
       theme(axis.text.x = element_text(angle=45,vjust=0.5),
 	    axis.title.x = element_blank()) +
       labs(x="",
@@ -673,6 +725,12 @@ isolate(unlink(sess_id,recursive = TRUE))
   output$distribution2D <- renderPlot({
 
     geneID <- re.id()
+    #validatiing that the gene exists in the db
+    validate(
+      need(try(length(geneID) > 0),
+           "There is no data for this gene. \n Confirm that the gene id uses GENCODE v24.")
+    )
+
     cl <- input$cellLine
     group <- "coding_type"
 
@@ -716,7 +774,16 @@ isolate(unlink(sess_id,recursive = TRUE))
     gene.df <- DBI::fetch(dbSendQuery(cn, query2),n=-1)
     suppressWarnings(dbDisconnect(cn))
 
-    #validation function
+
+    #validation functions
+    hasRCI = dplyr::filter(gene.df,source == 'ratio2')[,"expression_value"]
+    hasRCI = all(is.na(hasRCI))
+    validate(
+      need(try(!hasRCI),
+           "There is no data for this cell type and compartment.")
+    )
+
+
     validate(
       need(try("cell" %in% gene.df$source),
            "There is no whole cell data for this cell line.")
@@ -772,7 +839,7 @@ isolate(unlink(sess_id,recursive = TRUE))
         check_overlap = TRUE,
         vjust = -0.5, size = 5) +
       ggtitle(name.title) +
-      theme_lncatlas_2Ddistr() +
+      tdist + text_sizes +
       scale_colour_Publication(labels=c(n1,n2)) +
       guides(colour = guide_legend(title = "")) +
       labs(x = "Cell expression (log10(FPKM)) ",
@@ -889,6 +956,11 @@ isolate(unlink(sess_id,recursive = TRUE))
 
     # getting specifics genes
     geneID <- re.id()
+    validate(
+      need(try(length(geneID) > 0),
+           "There is no data for this gene. \n Confirm that the gene id uses GENCODE v24.")
+    )
+
     geneID <- unlist(strsplit(geneID,","))
 
     on.exit(progress$close())
@@ -979,7 +1051,7 @@ isolate(unlink(sess_id,recursive = TRUE))
       scale_shape_manual(values = c(8:(7+length(name))),
                          labels= c(name[geneID])) +
       scale_colour_Publication(labels=c("lncRNA","mRNA")) +
-      theme_lncatlas_distrK() +
+      tk + text_sizes +
       labs(x="Compartment",
            y="RCI ") +
       geom_text(data=gene.df, aes(label=paste0(round(extr*100,1),"%")),

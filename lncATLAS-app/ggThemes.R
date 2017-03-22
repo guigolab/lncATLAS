@@ -1,122 +1,75 @@
 library(grid)
-library(ggthemes)
 library(RColorBrewer)
 
 geneID <- "ENSG00000251562"
 
+# 3 themes and a general theme for the text size
 
 text_sizes <- theme(
+  text = element_text(size = 15),
   plot.title = element_text(face = "bold",
               size = rel(1.75), hjust = 0.5),
   axis.title = element_text(size = rel(1.5)),
   axis.text.y = element_text(size = rel(1.5)),
   axis.text.x = element_text(size = rel(1.4)),
-  strip.text = element_text(size = rel(1.5)),
+  strip.text = element_text(size = rel(1.4)),
   legend.text = element_text(size = rel(1.2)),
   legend.title = element_text(face="italic", size = rel(1.2))
   )
 
+tdist <- theme(plot.subtitle = element_text(vjust = 1),
+               plot.caption = element_text(vjust = 1),
+               axis.line = element_line(size = 0.5,
+                                        linetype = "solid"),
+               axis.ticks = element_line(linetype = "blank"),
+               panel.grid.major = element_line(colour = "black",
+                                               size = 0.2, linetype = "dashed"),
+               panel.grid.minor = element_line(linetype = "blank"),
+               panel.background = element_rect(fill = NA),
+               legend.position = c(0.8, 0.9),
+               legend.direction = "vertical",
+               legend.key.size = unit(0.5, "cm"),
+               legend.margin = unit(0.2, "cm"),
+               legend.key = element_rect(fill = NA))
 
-theme_lncatlas_Ratio <- function(base_size = 15) {
-  (theme_foundation(base_size=base_size)
-  + theme(
-    text = element_text(),
-    panel.background = element_rect(colour = NA),
-    plot.background = element_rect(colour = NA),
-    panel.border = element_rect(colour = NA),
-    panel.grid.major.y = element_line(colour="#e6e6e6", size = 0.5),
-    panel.grid.major.x = element_blank(),
-    panel.grid.minor = element_blank(),
-    axis.line.y = element_line(colour="#808080"),
-    axis.line.x = element_line(colour="#808080"),
-    axis.title.y = element_text(angle=90,vjust =2),
-    axis.title.x = element_text(vjust = -0.5),
-    axis.text.x = element_text(angle = 45, hjust = 1),
-    axis.ticks = element_blank(),
-    legend.key = element_rect(colour = NA),
-    legend.position = "bottom",
-    legend.direction = "horizontal",
-    legend.key.size = unit(0.5, "cm"),
-    legend.margin = unit(0.2, "cm")
-    )
-  + text_sizes)
-}
+tk  <- theme(plot.subtitle = element_text(vjust = 1),
+             axis.line = element_line(size = 0.5,
+                                      linetype = "solid"),
+             axis.ticks = element_line(linetype = "blank"),
+             panel.grid.major.y = element_line(colour = "black",
+                                               linetype = "dashed",
+                                               size = 0.2),
+             panel.grid.major.x = element_blank(),
+             panel.grid.minor = element_blank(),
+             axis.title = element_text(size = 14),
+             axis.text = element_text(size = 14),
+             plot.title = element_text(size = 15,
+                                       face = "bold",
+                                       hjust = 0.5),
+             panel.background = element_rect(fill = NA),
+             legend.position = "bottom", legend.direction = "horizontal",
+             legend.key = element_rect(fill = NA))
 
-
-
-
-
-theme_lncatlas_2Ddistr <- function(base_size = 15, base_family="helvetica") {
-  (theme_foundation(base_size=base_size)
-   + theme(
-     text = element_text(),
-     panel.background = element_rect(colour = NA),
-     plot.background = element_rect(colour = NA),
-     panel.border = element_rect(colour = NA),
-     panel.grid.major.y = element_line(colour="#e6e6e6", size = 0.5),
-     panel.grid.major.x = element_line(colour="#e6e6e6", size = 0.5),
-     panel.grid.minor = element_blank(),
-     axis.line.y = element_line(colour="#808080"),
-     axis.line.x = element_line(colour="#808080"),
-     axis.title.y = element_text(angle=90,vjust =2),
-     axis.title.x = element_text(vjust = -0.5),
-     axis.ticks = element_blank(),
-     legend.position = "bottom",
-     legend.direction = "vertical",
-     legend.key.size = unit(0.5, "cm"),
-     legend.margin = unit(0.2, "cm")
-   )
-   + text_sizes)
-}
-
-
-theme_lncatlas_distr <- function(base_size = 15, base_family="helvetica") {
-  (theme_foundation(base_size=base_size)
-   + theme(
-     text = element_text(),
-     panel.background = element_rect(colour = NA),
-     plot.background = element_rect(colour = NA),
-     panel.border = element_rect(colour = NA),
-     panel.grid.minor = element_blank(),
-     panel.grid.major = element_blank(),
-     axis.line.y = element_line(colour="#808080"),
-     axis.line.x = element_line(colour="#808080"),
-     axis.title.y = element_text(angle=90,vjust =2),
-     axis.title.x = element_text(vjust = -0.5),
-     axis.ticks = element_blank(),
-     legend.key = element_rect(colour = NA),
-     legend.position = c(0.8, 0.9),
-     legend.direction = "vertical",
-     legend.key.size = unit(0.5, "cm"),
-     legend.margin = unit(0.2, "cm")
-   )
-   + text_sizes)
-}
+theme_lncatlas_Ratio <- theme(
+  axis.line = element_line(size = 0.5,linetype = "solid",color = "black"),
+  axis.ticks = element_line(linetype = "blank"),
+  panel.grid.major.y = element_line(colour = "black",
+            size = 0.2, linetype = "dashed"),
+  panel.grid.major.x = element_blank(),
+  panel.grid.minor = element_blank(),
+  axis.text.x = element_text(angle = 90),
+  plot.title = element_text(size = 20,
+                            face = "bold", hjust = 0.5),
+  panel.background = element_rect(fill = NA),
+  legend.key = element_rect(fill = NA),
+  legend.background = element_rect(fill = NA),
+  legend.position = "bottom",
+  legend.direction = "horizontal",
+  strip.background = element_rect(colour = "black", fill = "#f9dea4",
+                                  size = 1))
 
 
 
-theme_lncatlas_distrK <- function(base_size = 15, base_family="helvetica") {
-  (theme_foundation(base_size=base_size)
-   + theme(
-     text = element_text(),
-     panel.background = element_rect(colour = NA),
-     plot.background = element_rect(colour = NA),
-     panel.border = element_rect(colour = NA),
-     panel.grid.minor = element_blank(),
-     panel.grid.major = element_blank(),
-     axis.line.y = element_line(colour="#808080"),
-     axis.line.x = element_line(colour="#808080"),
-     axis.title.y = element_text(angle=90,vjust =2),
-     axis.title.x = element_text(vjust = -0.5),
-     axis.ticks = element_blank(),
-     legend.key = element_rect(colour = NA),
-     legend.position = "bottom",
-     legend.direction = "horizontal",
-     legend.key.size = unit(0.5, "cm"),
-     legend.margin = unit(0.2, "cm")
-   )
-   + text_sizes)
-}
 
 
 scale_fill_Publication <- function(...){

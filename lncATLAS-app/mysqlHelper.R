@@ -81,6 +81,17 @@ resetConnections <- function(){
 }
 
 
+checkName <- function(name) {
+  names <- paste("gene_name = '",name, sep="")
+  cond <- paste(names, collapse = "' OR ")
+  query <- paste0("SELECT gene_name FROM genes WHERE (",
+                  cond,"') AND (coding_type = 'nc');")
+  cn <- lncatlasConnect()
+  geneID <- as.character(DBI::fetch(dbSendQuery(cn, query),n=-1)[,1])
+  suppressWarnings(dbDisconnect(cn))
+  return(geneID)
+}
+
 getID <- function(name) {
   names <- paste("gene_name = '",name, sep="")
   cond <- paste(names, collapse = "' OR ")

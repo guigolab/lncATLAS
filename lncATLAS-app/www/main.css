@@ -1,3 +1,8 @@
+.row {
+    margin-right: 0px;
+    margin-left: 0px; */
+}
+
 .container {
     display: flex;
 }
@@ -22,6 +27,7 @@ body {
 h2 {
     font-family: 'Secular One', sans-serif;
     font-size: 35px;
+    text-align: center;
 }
 h3 {
     font-family: 'Secular One', sans-serif;
@@ -73,7 +79,7 @@ h4 {
     right: 10px;
     height: 50px;
     width: 240px;
-    background-color: #eef8ff;
+    background-color: #81bae2;
     margin: 0px;
     padding: 2px 3px;
     opacity: 0.85;
@@ -96,8 +102,9 @@ h4 {
 .glyphicon-ok {
     color: #acf274;
 }
+/* this is the result of the validate function */
 .shiny-output-error-validation {
-    color: #ed8b36;
+    color: #ce2a06;
     font-size: 25px;
 }
 /* to avoid help box and search box unaligned*/
@@ -115,8 +122,35 @@ h4 {
 .horarrow {
     font-size: 100px;
 }
-.horarrow em {
+.horarrowtext {
     font-size: 30px;
     font-family: 'Secular One', sans-serif;
     font-style: normal;
 }
+p.horarrowtext {
+    margin: 36% 0 0 0;
+}
+#lowpad{
+    padding-right: 2%;
+    padding-top: 2%;
+    padding-bottom: 2%;
+    padding-left: 2%;
+}
+/* to reduce the padding up and down */
+.setpad {
+  padding: 1%;
+}
+
+#loadmessage {
+             position: fixed;
+             bottom: 0px;
+             left: 0px;
+             width: 100%;
+             padding: 5px 0px 5px 0px;
+             text-align: center;
+             font-weight: bold;
+             font-size: 100%;
+             color: #000000;
+             background-color: #81bae2;
+             z-index: 105;
+           }
