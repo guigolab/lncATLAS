@@ -66,15 +66,9 @@ Requires: BH, DBI, R6, Rcpp, assertthat, lazyeval, magrittr, tibble
 
 Package: ggplot2
 Source: CRAN
-Version: 2.1.0
-Hash: 50e297b0191179c39c7dcae0eff72b51
-Requires: digest, gtable, plyr, reshape2, scales
-
-Package: ggthemes
-Source: CRAN
-Version: 3.2.0
-Hash: 44ef6d3a43f207cea8003ed2d69c9c36
-Requires: assertthat, colorspace, ggplot2, scales
+Version: 2.2.1
+Hash: 46e5cb78836848aa44655e577433f54b
+Requires: digest, gtable, lazyeval, plyr, reshape2, scales, tibble
 
 Package: gtable
 Source: CRAN
@@ -143,8 +137,8 @@ Requires: Rcpp, plyr, stringr
 
 Package: scales
 Source: CRAN
-Version: 0.4.0
-Hash: bce90b73946711302c29ceabdb08241c
+Version: 0.4.1
+Hash: df14f133ba3c56809bd656f392030098
 Requires: RColorBrewer, Rcpp, dichromat, labeling, munsell, plyr
 
 Package: shiny
