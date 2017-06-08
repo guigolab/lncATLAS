@@ -1,3 +1,14 @@
+################################################################################
+################################################################################
+#                             lncATLAS -- User Interface
+#
+#         author: David Mas-Ponte @CRG
+#         R Shiny app - UI script
+#
+################################################################################
+################################################################################
+
+
 library(shiny)
 source("mysqlHelper.R")
 
@@ -35,6 +46,10 @@ dbDisconnect(cn)
 
 #gene.name.safe <- as.character(genes.df$Associated.Gene.Name)
 
+
+# verarrow is a html object to place vertical arrows in the plots.
+# it is useful to hint the user the cyto and nuclear direction in the
+# plots
 verarrow <- HTML("<div class = 'row'>
                     <div class = 'container-fluid'>
                      <p class = 'arrows'>&#8593;</p> <h3> Cytoplasmic</h3>
@@ -46,6 +61,7 @@ verarrow <- HTML("<div class = 'row'>
                     <h3> Nuclear</h3> <p class = 'arrows'>&#8595;</p>
                     </div></div>
                     ")
+# same as before but here with different heigh
 verarrow2 <- HTML("<div class = 'row'>
                     <div class = 'container-fluid'>
                      <p class = 'arrows'>&#8593;</p> <h3> Cytoplasmic</h3>
@@ -58,20 +74,18 @@ verarrow2 <- HTML("<div class = 'row'>
                     </div></div>
                     ")
 
-
-
-# Define the overall UI
+# Define the overall UI -  general function
 shinyUI(
 
   # first the page
   navbarPage("lncATLAS", inverse = TRUE,
     header = tags$head(
-      tags$link(rel = "stylesheet", type="text/css", href = "https://fonts.googleapis.com/css?family=Secular+One"),
+      tags$link(rel = "stylesheet", type="text/css", href = "https://fonts.googleapis.com/css?family=Secular+One"), # adding fonts
       tags$link(rel = "stylesheet", type = "text/css", href = "main.css")
   ),
     tabPanel("lncATLAS",
     # then 3 rows
-    fluidRow(class="center-block",
+    fluidRow(class="center-block", # row 1 - title
       column(2,offset=1,
              HTML('<img src="lncatlas.logo2.svg" class="img-fluid center-block" alt="Logo HERE" width = 250px>')),
               # img(src = "", class="center-block;")
@@ -87,7 +101,7 @@ shinyUI(
                  tags$div("Shiny is busy...",id="loadmessage")
 ),
     fluidRow(
-    fluidRow( id="section1",
+    fluidRow( id="section1", # row 2 the search row
       hr(),
 #       column(2,
 #              HTML('
@@ -104,7 +118,7 @@ shinyUI(
       column(5,offset =0,
              h2(align = "center","Search box:"),
              h3(align="center","Quick start:"),
-             HTML("<p>Find the subcellular localisation of your long non-conding RNA of interest:</p>
+             HTML("<p>Find the subcellular localisation of your long non-coding RNA of interest:</p>
 	       <ol>
 	       	<li>Enter the official GENCODE gene name (e.g. Malat1) or ENSEMBL gene ID (e.g. ENSG...) below (max. 3 genes)</li>
 	       	<li>Check for the ID to appear below and press Go to generate the plots</li>
@@ -177,7 +191,7 @@ shinyUI(
       ))
     ),
     fluidRow(column(8, offset=2,align="center", h3("S1 - Inspect the cytoplasmic-nuclear localisation of your gene of interest (GOI)"),hr())),
-    fluidRow(column(8, offset=2,align="center",h2("Plot 1 - Cytoplasmic/Nuclear Localisation: RCI and expression values (all cell types)", style="text-align: center;",
+    fluidRow(column(8, offset=2,align="center",h2("Plot 1 - Cytoplasmic/Nuclear Localisation: RCI and expression values (all cell types)", style="text-align: center;", # here the plots start
        class = "s1"))),
     fluidRow(column(2, align = "center",verarrow),
       column(9, align="center",
@@ -258,7 +272,7 @@ fluidRow(id = "p",
   tabPanel("Get Raw Data",
 	   fluidRow(column(12,align="center",
         	h2("Retrieve raw data from ENSEMBL IDs"),
-        	p("Enter in the box a list of ENSEMBL IDs, conding or non-coding to retrieve the raw values from our database."))),
+        	p("Enter in the box a list of ENSEMBL IDs, coding or non-coding to retrieve the raw values from our database."))),
         fluidRow(column(4,offset=2,align="center",
 	    	radioButtons("downltype", label = h3("Choose the data to retrieve"),
     choices = list("RCI - Localisation values" = 1, "All - Localisation and expression" = 2, "FPKM - Expression values" = 3),

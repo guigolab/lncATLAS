@@ -3,7 +3,7 @@
 #                             lncATLAS -- Server
 #
 #         author: David Mas-Ponte @CRG
-#         R Shiny app
+#         R Shiny app - server script
 #
 ################################################################################
 ################################################################################
@@ -20,10 +20,11 @@
 
 library(shiny)
 library(ggplot2)
+library(dplyr)
 source("mysqlHelper.R")
 source("ggThemes.R")
 source("helper.R")
-library(dplyr)
+
 
 # library(plotly)
 
