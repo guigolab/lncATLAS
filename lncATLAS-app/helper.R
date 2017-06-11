@@ -116,6 +116,8 @@ multipleExtremes <- function(vec){
 }
 
 
+#### Functions to generate the PSE bars
+
 
 getPSE <- function(vec){
   if (vec[1]) {
