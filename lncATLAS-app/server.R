@@ -425,7 +425,7 @@ isolate(unlink(sess_id,recursive = TRUE)) # remove the session when the user lea
       label.gg = NULL
     }
 
-
+    # backbone of the plot
     g <- ggplot() + geom_bar(aes(y = value, x = cellline, fill = d),
                data = plot.df,
                stat="identity", position = "identity") +
@@ -540,7 +540,7 @@ isolate(unlink(sess_id,recursive = TRUE)) # remove the session when the user lea
 
    distr.df$coding_type <- factor(distr.df$coding_type,
                                  levels = c("nc","coding"),ordered = TRUE)
-
+    # plot backbone
    g <- ggplot(data=distr.df,
            aes(expression_value)) +
       geom_density(aes(color=distr.df[,group])) +
