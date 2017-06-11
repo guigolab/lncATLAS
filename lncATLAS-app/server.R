@@ -51,7 +51,6 @@ isolate(unlink(sess_id,recursive = TRUE))
   output$retrieve <- renderTable({
     gene.ids <- unlist(strsplit(input$listretrive,"\n"))
     table.out <- getAllfromIDvec(gene.ids)
-    table.out <- table.out[,c(1:4,7:9)]
     colnames(table.out) <- c("ENSEMBL ID","Data Source","Data Type",
                              "Value","Gene Name","Coding Type",
                              "Biotype")
@@ -921,7 +920,6 @@ isolate(unlink(sess_id,recursive = TRUE))
     content = function(file) {
       gene.ids <- unlist(strsplit(input$listretrive,"\n"))
       table.out <- getAllfromIDvec(gene.ids)
-      table.out <- table.out[,c(1:4,7:9)]
       colnames(table.out) <- c("ENSEMBL ID","Data Source","Data Type",
                                "Value","Gene Name","Coding Type",
                                "Biotype")
