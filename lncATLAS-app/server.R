@@ -3,7 +3,7 @@
 #                             lncATLAS -- Server
 #
 #         author: David Mas-Ponte @CRG
-#         R Shiny app
+#         R Shiny app - server script
 #
 ################################################################################
 ################################################################################
@@ -20,10 +20,11 @@
 
 library(shiny)
 library(ggplot2)
+library(dplyr)
 source("mysqlHelper.R")
 source("ggThemes.R")
 source("helper.R")
-library(dplyr)
+
 
 # library(plotly)
 
@@ -44,13 +45,12 @@ isolate(dir.create(sess_id))
 # When a session ends, decrement the counter.
 session$onSessionEnded(function(){
 # We use isolate() here for the same reasons as above.
-isolate(unlink(sess_id,recursive = TRUE))
+isolate(unlink(sess_id,recursive = TRUE)) # remove the session when the user leaves
 })
 
   output$retrieve <- renderTable({
     gene.ids <- unlist(strsplit(input$listretrive,"\n"))
     table.out <- getAllfromIDvec(gene.ids)
-    table.out <- table.out[,c(1:4,7:9)]
     colnames(table.out) <- c("ENSEMBL ID","Data Source","Data Type",
                              "Value","Gene Name","Coding Type",
                              "Biotype")
@@ -90,14 +90,14 @@ isolate(unlink(sess_id,recursive = TRUE))
       progress <- shiny::Progress$new()
       progress$set(message = "Querying the Database", value = 0.01)
       query.all <- "SELECT genes_ensembl_gene_id,
-      data_source_expression_sites_name,
-       data_source_data_types_name,
-         expression_value,
-      gene_name,
-      coding_type,
-      coding_type
-    FROM expression
-    INNER JOIN genes ON genes_ensembl_gene_id = ensembl_gene_id"
+                    data_source_expression_sites_name,
+                    data_source_data_types_name,
+                    expression_value,
+                    gene_name,
+                    coding_type,
+                    coding_type
+                    FROM expression
+                    INNER JOIN genes ON genes_ensembl_gene_id = ensembl_gene_id"
       if (input$downltype == 1){
         query.all <- paste0(query.all, " WHERE data_source_data_types_name REGEXP 'ratio*';")
       } else if (input$downltype == 3){
@@ -334,6 +334,7 @@ isolate(unlink(sess_id,recursive = TRUE))
                    "OR data_source_data_types_name = 'cytosol'))")
 
     cn <- lncatlasConnect()
+    # get data from mysql
     ratios.cell.df <- getTable(cn, "expression" ,whole_table = FALSE,
                        column = c("genes_ensembl_gene_id AS gene_id",
                          "data_source_expression_sites_name AS cellline",
@@ -343,7 +344,9 @@ isolate(unlink(sess_id,recursive = TRUE))
 
     suppressWarnings(dbDisconnect(cn))
 
+    # select genes with valid RCI
     hasRCI = dplyr::filter(ratios.cell.df,source == 'ratio2')[,"value"]
+    # return a message if there are only NAs in the data
     hasRCI = all(is.na(hasRCI))
     validate(
       need(try(!hasRCI),
@@ -358,19 +361,21 @@ isolate(unlink(sess_id,recursive = TRUE))
     plot.df$d <- d
 
     # i select the na values
+    # we are assuming value 1 and value 2 are always cyto and nucl. Better if
+    # i find another way to handle it. !!enhancement!!
     nc <- dplyr::filter(ratios.cell.df,source == "nucleus" |
                           source == "cytosol")
     nc <- nc %>% group_by(gene_id,cellline) %>% mutate(pse =
                       (xor(value[1],value[2]) ) # checking pse
                       & all(!is.na(value))) #removing NA)
-    na.df <- dplyr::filter(nc,pse) #removing NA
+    na.df <- dplyr::filter(nc,pse) # gettint the valid pse
     label.df <- dplyr::filter(nc,!pse)
     label.df <- label.df %>% group_by(gene_id,cellline) %>%
       mutate(r = all(value != 0) & !is.na(value))
     label.df <- filter(label.df,r)
     label.df <- label.df %>% group_by(gene_id,cellline) %>%
       mutate(pos = setUpPos(value),c = getCol(value))
-
+      # here we generate the pse bars
     pseudocounts.df <- na.df %>% group_by(gene_id,cellline) %>% summarise(
       rest = round(getRest(value),1) , value = getPSE(value), pos = getPos(value)
     )
@@ -420,7 +425,7 @@ isolate(unlink(sess_id,recursive = TRUE))
       label.gg = NULL
     }
 
-
+    # backbone of the plot
     g <- ggplot() + geom_bar(aes(y = value, x = cellline, fill = d),
                data = plot.df,
                stat="identity", position = "identity") +
@@ -535,7 +540,7 @@ isolate(unlink(sess_id,recursive = TRUE))
 
    distr.df$coding_type <- factor(distr.df$coding_type,
                                  levels = c("nc","coding"),ordered = TRUE)
-
+    # plot backbone
    g <- ggplot(data=distr.df,
            aes(expression_value)) +
       geom_density(aes(color=distr.df[,group])) +
@@ -920,7 +925,6 @@ isolate(unlink(sess_id,recursive = TRUE))
     content = function(file) {
       gene.ids <- unlist(strsplit(input$listretrive,"\n"))
       table.out <- getAllfromIDvec(gene.ids)
-      table.out <- table.out[,c(1:4,7:9)]
       colnames(table.out) <- c("ENSEMBL ID","Data Source","Data Type",
                                "Value","Gene Name","Coding Type",
                                "Biotype")

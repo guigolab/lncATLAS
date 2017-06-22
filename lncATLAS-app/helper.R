@@ -1,5 +1,5 @@
 ######## GENERAL HELPER SCRIPT for lncATLAS #######
-
+####
 ## Author: David Mas
 cl <- "A549"
 group <- "coding_type"
@@ -115,6 +115,8 @@ multipleExtremes <- function(vec){
   layer.list
 }
 
+
+#### Functions to generate the PSE bars
 
 
 getPSE <- function(vec){

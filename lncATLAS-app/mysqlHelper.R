@@ -115,12 +115,18 @@ getGeneName <- function(id) {
 }
 
 
-
 getAllfromIDvec <- function(vectorids){
   geneID.cond <- paste("genes_ensembl_gene_id = '",vectorids, sep="")
   geneID.str.cond <- paste(geneID.cond, collapse = "' OR ")
-  query <- paste0("SELECT * FROM expression INNER JOIN genes ON genes_ensembl_gene_id = ensembl_gene_id WHERE ",
-                  geneID.str.cond,"';")
+  query <- paste0("SELECT
+    expression.genes_ensembl_gene_id ,
+    expression.data_source_expression_sites_name ,
+    expression.data_source_data_types_name ,
+    expression.expression_value ,
+    genes.gene_name ,
+    genes.coding_type ,
+    genes.bio_type
+    FROM expression INNER JOIN genes ON genes_ensembl_gene_id = ensembl_gene_id WHERE ", geneID.str.cond,"';")
   cn <- lncatlasConnect()
   table.return <- DBI::fetch(dbSendQuery(cn, query),n=-1)
   suppressWarnings(dbDisconnect(cn))
