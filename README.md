@@ -26,6 +26,12 @@ This is a dynamic measure that permits a quantitative comparison
 between multiple genes and also permits analysing distributions of
 gene sets.
 
+## Citation
+
+If you find lncATLAS useful for your work please cite us at:
+
+>Mas-Ponte D, Carlevaro-Fita J, Palumbo E, Pulido TH, Guigo R, Johnson R. LncATLAS database for subcellular localization of long noncoding RNAs. Rna. 2017 Jul 1;23(7):1080-7. 
+
 ## Docker deployment
 
 A docker image with the latest released version of the application is available at ...
@@ -46,7 +52,7 @@ docker run --name lncatlas -d -p 80:3838 -v /path/to/.mysqlconf:/srv/shiny-serve
 
 ## Authors
 
-This project has been carried out by [Rory Johnson's Lab](http://www.dkf.unibe.ch/research/research_groups/rna_amp_cancer_nccr_rna_amp_disease/index_eng.html) in the Department of Clinical Research (DCR) of the University of Bern and
+This project has been carried out by [Rory Johnson's Lab](https://gold-lab.org) in the Department of Clinical Research (DCR) of the University of Bern and
 [Roderic Guigo's Lab](http://www.crg.eu/roderic_guigo) at the [Centre for Genomic Regulation](http://www.crg.eu) in Barcelona.
 
-If you have questions or need further information please contact us at david.mas@crg.eu.
+If you have questions or need further information please contact us at david.mas@crg.eu or open a issue in this repository.
