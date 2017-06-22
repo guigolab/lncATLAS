@@ -15,7 +15,6 @@ GENCODE release [V24](http://www.gencodegenes.org/releases/24.html)
 and it is available through our website in the
 download all data button from get raw data panel.
 
-
 ## Measuring localisation
 
 The RCI or Relative Concentration Index is a measure based on the
