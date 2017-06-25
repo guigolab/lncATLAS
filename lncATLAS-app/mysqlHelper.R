@@ -114,8 +114,11 @@ getGeneName <- function(id) {
   return(geneID)
 }
 
-
-getAllfromIDvec <- function(vectorids){
+getAllfromIDvec <- function(vectorids){ 
+  vectorids[!grepl(pattern = "^ENSG\\d{11}$",vectorids)] = ""
+  #if(!all(grepl(pattern = "^ENSG\\d{11}$",vectorids))){
+  #  stop("Error in the query!")
+  #}
   geneID.cond <- paste("genes_ensembl_gene_id = '",vectorids, sep="")
   geneID.str.cond <- paste(geneID.cond, collapse = "' OR ")
   query <- paste0("SELECT
