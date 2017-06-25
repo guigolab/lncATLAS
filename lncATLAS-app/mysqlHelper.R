@@ -104,6 +104,7 @@ getID <- function(name) {
 }
 
 getGeneName <- function(id) {
+  id[!grepl(pattern = "^ENSG\\d{11}$",id)] = ""
   names <- paste("ensembl_gene_id = '",id, sep="")
   cond <- paste(names, collapse = "' OR ")
   query <- paste0("SELECT gene_name FROM genes WHERE ",
