@@ -1,6 +1,6 @@
 # lncATLAS
 
-![logo](lncATLAS-app/www/lncatlas.logo2.svg)
+![logo](lncATLAS-app/www/lncatlas.logo2.png)
 
  lncATLAS is an easy to use web-based visualization tool to obtain useful
 information about expression localization of long non-coding class of
