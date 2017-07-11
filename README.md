@@ -1,5 +1,7 @@
 # lncATLAS
 
+![logo](lncATLAS-app/www/lncatlas.logo2.svg)
+
  lncATLAS is an easy to use web-based visualization tool to obtain useful
 information about expression localization of long non-coding class of
 RNAs. It is easy to use by just searching your lncRNA of interest in the
