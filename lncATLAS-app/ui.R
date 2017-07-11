@@ -185,7 +185,9 @@ shinyUI(
           h3(align = "center","What is being displayed?"),
           p(class="text-justify",'LncATLAS displays the subcellular localisation for user-selected lncRNAs. Only GENCODE-annotated lncRNA genes are present, and may be accessed using their identifier (ENSG...) or official Gene Name. The localisation of your selected gene, or genes, will be displayed below for available cell types and cellular compartments. Please note that some plots display data for individual cell types, that may be selected using "Select a Cell Line" button.'),
           p(class="text-justify",'This localisation is expressed in units of Relative Concentration Index (RCI) - a comparison of the concentration of a gene, per unit mass of RNA, between two cellular compartments. For more information about how this data was analysed, please consult the "About LncATLAS" tab above.'),
-          p(class="text-justify",'Raw data for individual genes, or all genes, may be accessed from the "Get Raw Data" tab above. All plots may be downloaded using "Download Plot" buttons.'),
+          HTML("<br>"),
+          p(class="text-justify note",'Raw data for individual genes, or all genes, may be accessed from the "Get Raw Data" tab above.'),
+          p(class="text-justify note",'All plots may be downloaded using "Download Plot" buttons.'),
           #column(12,align="center",downloadButton('downloadData', 'Download raw data')),
           class="jumbotron setpad center-block")) # here
       ))
@@ -289,7 +291,9 @@ fluidRow(id = "p",
         column(width=2,offset=0,
           downloadButton('downloadData2', 'Download raw data from the list'),
           class="center-block;",style="margin-top:15px"
-        )),hr(),
+        )),
+        HTML('<br><p class="text-center"><b>Note</b> that you should wait until a table below the line is generated to download the raw data.</p>'),
+        hr(),
         fluidRow(column(width=6,offset=3,
                         tableOutput("retrieve"),style="margin-top:15px"
         ))

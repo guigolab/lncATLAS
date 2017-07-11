@@ -3,6 +3,8 @@
     margin-left: 0px; */
 }
 
+p.note { font-style: italic; }
+
 .container {
     display: flex;
 }
