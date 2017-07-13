@@ -35,7 +35,11 @@ If you find lncATLAS useful for your work please cite us at:
 
 ## Docker deployment
 
-A docker image with the latest released version of the application is available at ...
+A Docker image with the latest released version of the application is available from the [Docker Hub](https://hub.docker.com/r/guigolab/lncatlas/). It can be downloaded with this command:
+
+```bash
+docker pull guigolab/lncatlas
+```
 
 In order to build a docker image with a specific version of the application run the following command:
 
